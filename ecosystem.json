@@ -1,0 +1,48 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  "apps": [
+    {
+      "name"      : "projectname",
+      "script"    : "scripts/start.js",
+      "instances"  : 2,
+      "exec_mode"  : "cluster_mode",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "env_production": {
+        "SERVER_PORT": 5000,
+        "API_URL": "https://api.projectname",
+      },
+      "env_staging": {
+        "SERVER_PORT": 5000,
+        "API_URL": "http://api.staging.projectname",
+      }
+    }
+  ],
+
+  /**
+   * Deployment section
+   * http://pm2.keymetrics.io/docs/usage/deployment/
+   */
+  "deploy": {
+    "production": {
+      "user":         "projectname",
+      "host":         "projectname.local",
+      "ref" :         "origin/master",
+      "repo":         "git@bitbucket.org:projectname/projectname.git",
+      "path":         "/home/projectname/projectname",
+      "post-deploy":  "NODE_ENV=production UV_THREADPOOL_SIZE=100 npm install && pm2 startOrGracefulReload ecosystem.json --env production && pm2 save"
+    },
+    "staging": {
+      "user":         "projectname",
+      "host":         "projectname.site",
+      "ref" :         "origin/master",
+      "repo":         "git@bitbucket.org:projectname/projectname.git",
+      "path":         "/home/projectname/projectname",
+      "post-deploy":  "NODE_ENV=production UV_THREADPOOL_SIZE=100 npm install && pm2 startOrGracefulReload ecosystem.json --env staging && pm2 save"
+    }
+  }
+}

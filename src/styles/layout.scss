@@ -1,0 +1,63 @@
+@import "config/mixins";
+
+.layout-grow {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__header, &__footer {
+    flex-shrink: 0;
+  }
+
+  &__header {
+    position: relative;
+    z-index: 3;
+  }
+
+  &__content {
+    @extend .layout-grow;
+
+    position: relative;
+    z-index: 2;
+  }
+
+  &__footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  &--landing &__header {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  &--school &__header {
+    @include respond-to(desktop) {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  &--school &__content {
+    background-color: white;
+  }
+
+  &--school &__footer {
+    position: relative;
+    z-index: 3;
+  }
+}
+
+.layout-container {
+  @include container;
+}

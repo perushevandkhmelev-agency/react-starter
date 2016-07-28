@@ -1,0 +1,9 @@
+@import "config/mixins";
+
+@media (max-width: $page-desktop - 1) {
+  .root {
+    &.has-modal &__content {
+      display: none;
+    }
+  }
+}
