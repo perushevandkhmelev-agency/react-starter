@@ -5,7 +5,7 @@
   100% { transform: rotate(360deg); }
 }
 
-.ko-spinner {
+.spinner {
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -26,7 +26,7 @@
   }
 }
 
-.ko-spinner-string {
+.spinner-string {
   display: table;
   width: 100%;
   height: 60px;
@@ -41,11 +41,11 @@
     text-align: center;
   }
 
-  .ko-spinner {
+  .spinner {
     margin-top: -0.3em;
   }
 
-  .ko-spinner + span {
+  .spinner + span {
     display: inline-block;
     margin-left: 10px;
     color: $color-gray;
