@@ -120,6 +120,9 @@ let webpackConfig = {
   resolve: {
     extensions: ['', '.json', '.css', '.scss', '.js'],
     modulesDirectories: ['node_modules', 'src']
+  },
+  stats: {
+    children: false
   }
 }
 
