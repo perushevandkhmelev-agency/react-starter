@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { connect } from 'react-redux'
 import { createSelector, createStructuredSelector } from 'reselect'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import Transition from 'react-transition-group'
 import get from 'lodash/get'
 
 import Modal from './Modal'
@@ -46,12 +46,12 @@ export default class Root extends React.Component {
     return (
       <section className={classnames('max-height', { 'has-modal': !!this.props.component })}>
         {this.props.children}
-        <ReactCSSTransitionGroup transitionName='modal-animation' transitionEnterTimeout={500} transitionLeaveTimeout={100}>
+        <Transition transitionName='modal-animation' transitionEnterTimeout={500} transitionLeaveTimeout={100}>
           {this.props.component ?
             <Modal key={this.props.componentUid} with={this.props.component} onClose={this.props.hideModal}>
               <this.props.component {...this.props.componentProps} />
             </Modal> : null}
-        </ReactCSSTransitionGroup>
+        </Transition>
       </section>
     )
   }
