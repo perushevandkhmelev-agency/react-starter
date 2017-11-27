@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default class ErrorContext extends React.Component {
   static get childContextTypes() {
     return {
-      error: React.PropTypes.object
+      error: PropTypes.object
     }
   }
 
