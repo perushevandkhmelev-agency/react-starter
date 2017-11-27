@@ -1,12 +1,13 @@
 import React from 'react'
 import classnames from 'classnames'
+import PropTypes from 'prop-types'
 
 import '../../styles/layout.scss'
 
 export default class Layout extends React.Component {
   static propTypes = {
-    footer: React.PropTypes.bool,
-    user: React.PropTypes.object
+    footer: PropTypes.bool,
+    user: PropTypes.object
   };
 
   static defaultProps = {
