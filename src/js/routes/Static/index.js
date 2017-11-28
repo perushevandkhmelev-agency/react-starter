@@ -8,5 +8,9 @@ export default [
   {
     path: '/test',
     component: require('routes/Static/components/Test')
+  },
+  {
+    path: '*',
+    component: require('components/ErrorPage')
   }
 ]
