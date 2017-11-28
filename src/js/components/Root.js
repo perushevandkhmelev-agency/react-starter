@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { connect } from 'react-redux'
 import { createSelector, createStructuredSelector } from 'reselect'
+import { renderRoutes } from 'react-router-config'
 import Transition from 'react-transition-group'
 import get from 'lodash/get'
 
@@ -45,13 +46,13 @@ export default class Root extends React.Component {
   _renderApplication() {
     return (
       <section className={classnames('max-height', { 'has-modal': !!this.props.component })}>
-        {this.props.children}
-        <Transition transitionName='modal-animation' transitionEnterTimeout={500} transitionLeaveTimeout={100}>
+        {renderRoutes(this.props.route.routes)}
+        {/* <Transition transitionName='modal-animation' transitionEnterTimeout={500} transitionLeaveTimeout={100}>
           {this.props.component ?
             <Modal key={this.props.componentUid} with={this.props.component} onClose={this.props.hideModal}>
               <this.props.component {...this.props.componentProps} />
             </Modal> : null}
-        </Transition>
+        </Transition> */}
       </section>
     )
   }

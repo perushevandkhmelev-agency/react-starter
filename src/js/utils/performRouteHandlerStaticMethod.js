@@ -11,19 +11,23 @@
  * @param {string} methodName - Name of static method to call
  * @param {...any} ...args - Arguments to pass to the static method
  */
-export default function performRouteHandlerStaticMethod(methodName, state, store, ...args) {
+export default function performRouteHandlerStaticMethod(methodName, branch, store, ...args) {
   const { error } = store.getState()
 
   if (error && error.nextCode) {
     return Promise.resolve()
   }
 
-  return Promise.all(state.components
-    .map(component => {
-      const routeComponent = component && component.WrappedComponent ? component.WrappedComponent : component
-      return routeComponent ? routeComponent[methodName] : null
-    })
-    .filter(method => typeof method === 'function')
-    .map(method => method(state, store, ...args))
+  return Promise.all(
+    branch
+      .map(({ route }) => {
+        return route.component
+      })
+      .map(component => {
+        const routeComponent = component && component.WrappedComponent ? component.WrappedComponent : component
+        return routeComponent ? routeComponent[methodName] : null
+      })
+      .filter(method => typeof method === 'function')
+      .map(method => method(branch, store, ...args))
   )
 }

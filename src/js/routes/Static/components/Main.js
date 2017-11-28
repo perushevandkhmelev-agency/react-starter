@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FormattedMessage, defineMessages } from 'react-intl'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import Layout from '../../../components/Layout'
 

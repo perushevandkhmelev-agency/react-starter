@@ -2,20 +2,19 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
+import { renderRoutes } from 'react-router-config'
 import ErrorContext from './components/ErrorContext'
 import performRouteHandlerStaticMethod from './utils/performRouteHandlerStaticMethod'
 import { beforeNavigate, navigate } from './actions/router'
 import formats from './formats'
-import { RouterContext } from 'react-router'
 
-export default function*(store, state, history, initial) {
+export default function*(store, routes, branch, initial) {
   const routerActions = bindActionCreators({ beforeNavigate, navigate }, store.dispatch)
   const { locale, translations, time } = store.getState()
 
-  routerActions.beforeNavigate(state, initial)
-  yield performRouteHandlerStaticMethod('fetchData', state, store)
-  routerActions.navigate(state)
-  console.log(state)
+  routerActions.beforeNavigate(branch, initial)
+  yield performRouteHandlerStaticMethod('fetchData', branch, store)
+  routerActions.navigate(branch)
 
   return (
     <IntlProvider
@@ -26,9 +25,7 @@ export default function*(store, state, history, initial) {
       defaultLocale="ru"
       initialNow={time.render}>
       <Provider store={store}>
-        <ErrorContext error={store.getState().error}>
-          <RouterContext history={history} {...state} />
-        </ErrorContext>
+        <ErrorContext error={store.getState().error}>{renderRoutes(routes)}</ErrorContext>
       </Provider>
     </IntlProvider>
   )
