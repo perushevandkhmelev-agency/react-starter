@@ -8,7 +8,12 @@
     [
       "module-resolver",
       {
-        "root": ["./src/js"]
+        "root": ["./src/js"],
+        "alias": {
+          "assets": "./src/assets",
+          "styles": "./src/styles",
+          "translate": "./intl"
+        }
       }
     ],
     [
