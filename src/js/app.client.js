@@ -1,7 +1,6 @@
 import 'normalize.css'
 import '../styles/globals'
 
-import co from 'co'
 import React from 'react'
 import { hydrate } from 'react-dom'
 import { matchRoutes } from 'react-router-config'
@@ -21,19 +20,19 @@ const routes = createRoutes(store)
 
 let initial = true
 
-IntlUtils().then(() => {
-  const wrappedListen = co.wrap(listen)
-  wrappedListen(browserHistory.location)
-  browserHistory.listen(wrappedListen)
-})
+async function app() {
+  await IntlUtils()
+  await handleHistoryChange(browserHistory.location)
+  browserHistory.listen(handleHistoryChange)
+}
 
-function* listen(location) {
+async function handleHistoryChange(location) {
   if (!initial) {
     progress.start()
   }
 
   const branch = matchRoutes(routes, location.pathname + location.search)
-  const component = yield renderApp(store, routes, branch, initial)
+  const component = await renderApp(store, routes, branch, initial)
 
   try {
     hydrate(<Router history={browserHistory}>{component}</Router>, document.getElementById('Root'))
@@ -54,3 +53,5 @@ function* listen(location) {
     initial = false
   }
 }
+
+app()

@@ -14,7 +14,7 @@ import config from './config'
 export default function() {
   require('./utils/IntlUtils').default()
 
-  return function*(next) {
+  return async function(ctx, next) {
     let store = createStore()
     let miscActions = bindActionCreators(MiscActions, store.dispatch)
     miscActions.setConfig(config)
@@ -23,7 +23,7 @@ export default function() {
 
     let createRoutes = require('./routes.js')
     let routes = createRoutes(store)
-    let branch = matchRoutes(routes, this.request.originalUrl)
+    let branch = matchRoutes(routes, ctx.request.originalUrl)
 
     // Set current locale
     miscActions.setLocale('ru', loadTranslations())
@@ -32,31 +32,31 @@ export default function() {
     miscActions.syncTime()
 
     const context = {}
-    const component = yield renderApp(store, routes, branch, true)
+    const component = await renderApp(store, routes, branch, true)
 
     const markup = renderToString(
-      <StaticRouter location={this.request.originalUrl} context={context}>
+      <StaticRouter location={ctx.request.originalUrl} context={context}>
         {component}
       </StaticRouter>
     )
 
     if (context.url) {
-      this.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
-      this.redirect(context.url)
+      ctx.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
+      ctx.redirect(context.url)
     } else {
-      this.state.body = markup
-      this.state.storeState = JSON.stringify(store.getState())
-      this.state.head = Helmet.rewind()
+      ctx.state.body = markup
+      ctx.state.storeState = JSON.stringify(store.getState())
+      ctx.state.head = Helmet.rewind()
 
       if (store.getState().error.code) {
-        this.throw('Reject', store.getState().error.code || 404)
+        ctx.throw('Reject', store.getState().error.code || 404)
       }
 
-      yield next
+      await next()
     }
 
     // } else {
-    //   this.throw('Not found', 404)
+    //   ctx.throw('Not found', 404)
     // }
   }
 }
