@@ -8,12 +8,12 @@ import performRouteHandlerStaticMethod from './utils/performRouteHandlerStaticMe
 import { beforeNavigate, navigate } from './actions/router'
 import formats from './formats'
 
-export default function*(store, routes, branch, initial) {
+export default async function(store, routes, branch, initial) {
   const routerActions = bindActionCreators({ beforeNavigate, navigate }, store.dispatch)
   const { locale, translations, time } = store.getState()
 
   routerActions.beforeNavigate(branch, initial)
-  yield performRouteHandlerStaticMethod('fetchData', branch, store)
+  await performRouteHandlerStaticMethod('fetchData', branch, store)
   routerActions.navigate(branch)
 
   return (
