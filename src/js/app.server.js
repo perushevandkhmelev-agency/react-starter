@@ -49,7 +49,7 @@ export default function() {
       ctx.state.head = Helmet.rewind()
 
       if (store.getState().error.code) {
-        ctx.throw('Reject', store.getState().error.code || 404)
+        ctx.response.status = store.getState().error.code || 404
       }
 
       await next()
