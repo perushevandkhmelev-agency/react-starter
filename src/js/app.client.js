@@ -1,4 +1,6 @@
 import 'normalize.css'
+import 'styles/fonts'
+import 'styles/icons'
 import 'styles/globals'
 
 import React from 'react'

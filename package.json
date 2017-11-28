@@ -5,6 +5,7 @@
   "repository": "git@bitbucket.org:projectname/projectname.git",
   "license": "MIT",
   "main": "server/index.js",
+  "author": "Perushev & Khmelev",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node scripts/start",
@@ -15,9 +16,14 @@
     "deploy:setup": "./node_modules/.bin/pm2 kill && ./node_modules/.bin/pm2 deploy ecosystem.json staging setup",
     "deploy:production": "./node_modules/.bin/pm2 kill && ./node_modules/.bin/pm2 deploy ecosystem.json production --force",
     "deploy:production:setup": "./node_modules/.bin/pm2 kill && ./node_modules/.bin/pm2 deploy ecosystem.json production setup",
-    "postinstall": "node scripts/deploy"
+    "postinstall": "node scripts/deploy",
+    "icons:edit": "./node_modules/.bin/gulp icons-edit",
+    "icons:save": "./node_modules/.bin/gulp icons-save"
   },
-  "author": "Perushev & Khmelev",
+  "config": {
+    "iconsFonts": "src/assets/fonts/icons",
+    "iconsServer": "http://fontello.com"
+  },
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
