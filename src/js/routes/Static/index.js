@@ -1,10 +1,12 @@
 export default [
   {
     path: '/',
-    component: require('./components/Main')
+    exact: true,
+    component: require('routes/Static/components/Main'),
+    routes: []
   },
   {
-    path: 'test',
-    component: require('./components/Test')
+    path: '/test',
+    component: require('routes/Static/components/Test')
   }
 ]
