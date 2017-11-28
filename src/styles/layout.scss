@@ -1,5 +1,9 @@
 @import 'config/mixins';
 
+.test {
+  background-color: gray;
+}
+
 .layout-grow {
   display: flex;
   flex-direction: column;

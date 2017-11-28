@@ -41,7 +41,7 @@ export default {
     })
 
     compiler.plugin('done', () => {
-      console.log(`Bundled in ${(Date.now() - bundleStart)}ms!`)
+      console.log(`Bundled in ${Date.now() - bundleStart}ms!`)
       callback()
     })
 
@@ -53,6 +53,10 @@ export default {
       noInfo: true,
       stats: {
         colors: true
+      },
+
+      headers: {
+        'Access-Control-Allow-Origin': '*'
       },
 
       historyApiFallback: false

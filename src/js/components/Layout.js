@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-import 'styles/layout.scss'
+import CSSModules from 'react-css-modules'
+import styles from 'styles/layout.scss'
 
+@CSSModules(styles)
 export default class Layout extends Component {
   render() {
     const { className, children, ...props } = this.props
     return (
-      <section {...props} className={classnames(className, 'layout')}>
+      <section {...props} styleName="test" className={classnames(className, 'layout')}>
         <div className="layout__header">Header</div>
         <div className="layout__content">{children}</div>
         <div className="layout__footer">Footer</div>
