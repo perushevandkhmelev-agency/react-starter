@@ -8,7 +8,7 @@
     [
       "module-resolver",
       {
-        "root": ["./"]
+        "root": ["./src/js"]
       }
     ],
     [
