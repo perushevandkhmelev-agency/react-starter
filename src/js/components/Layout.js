@@ -29,3 +29,4 @@ const component = type =>
   }
 
 Layout.Container = component('container')
+Layout.Modal = component('modal')

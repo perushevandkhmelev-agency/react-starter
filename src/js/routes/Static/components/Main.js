@@ -26,7 +26,6 @@ export default class extends Component {
   render() {
     return (
       <Layout>
-        <MainModal />
         <h1>
           <FormattedMessage {...messages.title} />
         </h1>

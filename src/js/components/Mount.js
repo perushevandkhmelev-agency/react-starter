@@ -6,6 +6,7 @@ import uniqueId from 'lodash/uniqueId'
 import pick from 'lodash/pick'
 import omit from 'lodash/omit'
 import without from 'lodash/without'
+import findLast from 'lodash/findLast'
 import dropRightWhile from 'lodash/dropRightWhile'
 
 import { ROUTER_NAVIGATE } from '../constants/ActionTypes'
@@ -62,7 +63,7 @@ const DEFAULT_TRANSITION = {
 
 import '../../styles/mount.scss'
 
-export default class MountContainer extends Component {
+export default class extends Component {
   static contextTypes = {
     store: PropTypes.object
   }
@@ -81,16 +82,6 @@ export default class MountContainer extends Component {
     transitionOptions: DEFAULT_TRANSITION
   }
 
-  constructor(props) {
-    super(props)
-
-    this.push = this.push.bind(this)
-    this.pop = this.pop.bind(this)
-    this.autoclose = this.autoclose.bind(this)
-    this._didMount = this._didMount.bind(this)
-    this._renderStackItem = this._renderStackItem.bind(this)
-  }
-
   getChildContext() {
     return {
       mount: {
@@ -103,7 +94,7 @@ export default class MountContainer extends Component {
   componentDidMount() {
     this.context.store.dispatch({
       type: MOUNT_SET_ACTIONS,
-      actions: { push: this.push, pop: this.pop, autoclose: this.autoclose }
+      actions: { push: this.push, pop: this.pop, autoclose: this.autoclose, next: this.next }
     })
   }
 
@@ -120,9 +111,10 @@ export default class MountContainer extends Component {
   render() {
     const isMounted = this.state.mounted[get(this.state, 'stack[0].key', null)] || false
     return (
-      <section className={classnames('mount', this.props.className)}>
+      <section className={classnames('mount max-height', this.props.className)}>
         <div ref="mobile" className="only-mobile" />
-        <div className={classnames('mount__content', this.props.contentClassName, { 'is-mounted': isMounted })}>
+        <div
+          className={classnames('mount__content max-height', this.props.contentClassName, { 'is-mounted': isMounted })}>
           {this.props.children}
         </div>
         {/*<ReactCSSTransitionGroup {...this.state.transitionOptions}>*/}
@@ -132,7 +124,7 @@ export default class MountContainer extends Component {
     )
   }
 
-  _renderStackItem(item, index) {
+  _renderStackItem = (item, index) => {
     const itemIndex = this.state.stack.indexOf(item)
     const isMounted = this.state.mounted[get(this.state, `stack[${itemIndex + 1}].key`, null)] || false
     return (
@@ -142,7 +134,7 @@ export default class MountContainer extends Component {
     )
   }
 
-  push(component, options = {}) {
+  push = (component, options = {}) => {
     return new Promise((resolve, reject) => {
       const componentNode = React.createElement(component, options.props)
       const transitionOptions = { ...DEFAULT_TRANSITION, ...pick(options, TRANSITION_KEYS) }
@@ -158,24 +150,23 @@ export default class MountContainer extends Component {
       })
 
       this.setState({ transitionOptions }, () => {
-        this.setState({ stack }, () => {
-          console.log('transitionOptions.transitionEnterTimeout', transitionOptions.transitionEnterTimeout)
-          // if (transitionOptions.transitionEnter) {
-          //   this._mountTimeout = setTimeout(this._didMount, transitionOptions.transitionEnterTimeout)
-          // } else {
+        this.setState({ stack })
+
+        if (transitionOptions.transitionEnter) {
+          this._mountTimeout = setTimeout(this._didMount, transitionOptions.transitionEnterTimeout)
+        } else {
           this._didMount(stack)
-          // }
-        })
+        }
       })
     })
   }
 
-  autoclose() {
+  autoclose = () => {
     if (this.state.stack.length === 0) {
       return
     }
 
-    let nextStack = dropRightWhile(this.state.stack, ['autoclose', true])
+    let nextStack = dropRightWhile(this.state.stack, 'autoclose', true)
     if (nextStack.length === this.state.stack.length) {
       return
     }
@@ -194,7 +185,7 @@ export default class MountContainer extends Component {
     })
   }
 
-  pop() {
+  pop = () => {
     if (this.state.stack.length === 0) {
       return
     }
@@ -211,11 +202,18 @@ export default class MountContainer extends Component {
     })
   }
 
-  _didMount(stack = this.state.stack) {
-    const lastStackItem = stack[stack.length - 1]
-    if (!lastStackItem) {
-      console.log('stack length', stack.length)
+  next = () => {
+    if (this.state.stack.length > 0) {
+      const lastStackWithNext = findLast(this.state.stack, item => 'next' in item)
+      if (lastStackWithNext) {
+        return lastStackWithNext.next
+      }
     }
+  }
+
+  _didMount = (stack = this.state.stack) => {
+    console.log('did mount')
+    const lastStackItem = stack[stack.length - 1]
     const mounted = { ...this.state.mounted, [lastStackItem.key]: true }
 
     this.setState({ mounted }, () => {
