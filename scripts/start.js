@@ -7,11 +7,12 @@ if (process.env.NODE_ENV === 'production' || process.env.CHILD) {
   var WebpackIsomorphicTools = require('webpack-isomorphic-tools')
   var context = require('path').resolve(__dirname, '../src')
 
-  global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic-tools.config'))
-    .development(process.env.NODE_ENV === 'development')
-    .server(context, function() {
+  global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic-tools.config')).server(
+    context,
+    function() {
       require('../server')
-    })
+    }
+  )
 } else {
   require('../server/dev')
 }
