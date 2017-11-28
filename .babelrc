@@ -19,8 +19,7 @@
     [
       "react-intl",
       {
-        "messagesDir": "./intl/",
-        "enforceDescriptions": true
+        "messagesDir": "./intl/"
       }
     ]
   ]

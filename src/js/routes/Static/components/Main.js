@@ -8,12 +8,10 @@ import MainModal from './MainModal'
 const messages = defineMessages({
   title: {
     id: 'main.title',
-    description: 'Main page',
     defaultMessage: 'Главная страница'
   },
   link: {
     id: 'main.link',
-    description: 'Test',
     defaultMessage: 'Тестовая страница'
   }
 })
