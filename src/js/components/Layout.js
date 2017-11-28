@@ -1,48 +1,32 @@
-import React from 'react'
+import React, { Component } from 'react'
 import classnames from 'classnames'
+import PropTypes from 'prop-types'
 
-import '../../styles/layout.scss'
+import 'styles/layout.scss'
 
-export default class Layout extends React.Component {
-  static propTypes = {
-    footer: React.PropTypes.bool,
-    user: React.PropTypes.object
-  };
-
-  static defaultProps = {
-    footer: true,
-    user: null
-  };
-
+export default class Layout extends Component {
   render() {
-    const { className, ...restProps } = this.props
+    const { className, children, ...props } = this.props
     return (
-      <section className={classnames(this.props.className, 'layout')}>
-        <div className="layout__header">
-          Header
-        </div>
-        <div className="layout__content">
-          {this.props.children}
-        </div>
-        <div className="layout__footer">
-          Footer
-        </div>
+      <section {...props} className={classnames(className, 'layout')}>
+        <div className="layout__header">Header</div>
+        <div className="layout__content">{children}</div>
+        <div className="layout__footer">Footer</div>
       </section>
     )
   }
 }
 
-function component(type) {
-  class LayoutComponent extends React.Component {
+const component = type =>
+  class extends Component {
     render() {
+      const { className, children, ...props } = this.props
       return (
-        <div {...this.props} className={classnames(this.props.className, `layout-${type}`)}>
-          {this.props.children}
+        <div {...props} className={classnames(className, `layout-${type}`)}>
+          {children}
         </div>
       )
     }
   }
-  return LayoutComponent
-}
 
 Layout.Container = component('container')

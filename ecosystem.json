@@ -34,7 +34,7 @@
       "ref" :         "origin/master",
       "repo":         "git@bitbucket.org:projectname/projectname.git",
       "path":         "/home/projectname/projectname",
-      "post-deploy":  "NODE_ENV=production UV_THREADPOOL_SIZE=100 npm install && pm2 startOrGracefulReload ecosystem.json --env production && pm2 save"
+      "post-deploy":  "NODE_ENV=production UV_THREADPOOL_SIZE=100 yarn && pm2 startOrGracefulReload ecosystem.json --env production && pm2 save"
     },
     "staging": {
       "user":         "projectname",
@@ -42,7 +42,7 @@
       "ref" :         "origin/master",
       "repo":         "git@bitbucket.org:projectname/projectname.git",
       "path":         "/home/projectname/projectname",
-      "post-deploy":  "NODE_ENV=production UV_THREADPOOL_SIZE=100 npm install && pm2 startOrGracefulReload ecosystem.json --env staging && pm2 save"
+      "post-deploy":  "NODE_ENV=production UV_THREADPOOL_SIZE=100 yarn && pm2 startOrGracefulReload ecosystem.json --env staging && pm2 save"
     }
   }
 }

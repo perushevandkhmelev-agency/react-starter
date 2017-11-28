@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createSelector, createStructuredSelector } from 'reselect'
 import get from 'lodash/get'
@@ -22,8 +23,8 @@ const mapStateToProps = createStructuredSelector({
 @connect(mapStateToProps)
 export default class Modal extends React.Component {
   static propTypes = {
-    isOpen: React.PropTypes.bool,
-    onClose: React.PropTypes.func
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.func
   };
 
   render() {

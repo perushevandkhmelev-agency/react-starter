@@ -2,27 +2,25 @@ require('dotenv').load({ silent: true })
 
 import path from 'path'
 import webpack from 'webpack'
-import autoprefixer from 'autoprefixer'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import IsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin'
-import isomorphicToolsConfig from './isomorphic-tools'
+import ExtractTextWebpackPlugin from 'extract-text-webpack-plugin'
+import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin'
+import WebpackIsomorphicToolsConfig from './isomorphic-tools.config'
+const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsomorphicToolsConfig)
 
 const isProduction = process.env.NODE_ENV === 'production'
 let address = 'localhost'
-
-let isomorphicToolsPlugin = new IsomorphicToolsPlugin(isomorphicToolsConfig).development(!isProduction)
 
 if (!isProduction) {
   const ip = require('ip')
   address = process.env.EXTERNAL === 'true' ? ip.address() : 'localhost'
 }
 
-let webpackConfig = {
+let config = {
   context: path.resolve(__dirname, '../src'),
   entry: {
-    app: 'js/app.client',
-    server: 'js/app.server', // watch and reload server
+    app: path.resolve(__dirname, '../src/js/app.client.js'),
+    server: path.resolve(__dirname, '../src/js/app.server.js'),
     vendor: [
       'babel-polyfill',
       'isomorphic-fetch',
@@ -43,62 +41,87 @@ let webpackConfig = {
     publicPath: isProduction ? '/assets/' : `http://${address}:9090/assets/`
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loaders: isProduction ? ['babel-loader'] : ['react-hot-loader', 'babel-loader'],
+        use: 'babel-loader',
         include: path.resolve(__dirname, '../src')
       },
       {
-        test: isomorphicToolsPlugin.regular_expression('styles'),
-        loader: ExtractTextPlugin.extract('style-loader', ['css-loader?-autoprefixer&importLoaders=2', 'postcss-loader', 'sass-loader'])
+        test: webpackIsomorphicToolsPlugin.regular_expression('styles'),
+        use: ExtractTextWebpackPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader?-autoprefixer',
+              options: {
+                importLoaders: 2
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                config: {
+                  path: path.resolve(__dirname, '../postcss.config.js')
+                }
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                includePaths: [path.resolve(__dirname, '../src/styles'), path.resolve(__dirname, '../src/assets')]
+              }
+            }
+          ]
+        })
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        use: 'json-loader'
       },
       {
-        test: isomorphicToolsPlugin.regular_expression('fonts'),
-        loader: 'url-loader',
-        query: {
-          limit: 8192,
-          name: isProduction ? '[name].[hash:10].[ext]' : '[name].[ext]'
-        }
+        test: webpackIsomorphicToolsPlugin.regular_expression('fonts'),
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: isProduction ? '[name].[hash:10].[ext]' : '[name].[ext]'
+            }
+          }
+        ]
       },
       {
-        test: isomorphicToolsPlugin.regular_expression('images'),
-        loader: 'url-loader',
-        query: {
-          limit: 8192,
-          name: isProduction ? '[name].[hash:10].[ext]' : '[name].[ext]'
-        }
+        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: isProduction ? '[name].[hash:10].[ext]' : '[name].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
+        use: 'raw-loader',
+        include: path.resolve(__dirname, '../src/assets/raw')
       }
     ]
   },
-  sassLoader: {
-    includePaths: [
-      path.resolve(__dirname, '../src/styles'),
-      path.resolve(__dirname, '../src/assets')
-    ]
-  },
-  postcss: [
-    autoprefixer({
-      browsers: [
-        'last 2 versions',
-        'ios >= 8',
-        'ie >= 10',
-        'android >= 4.0'
-      ]
-    })
-  ],
   node: {
     fs: 'empty',
     net: 'empty'
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
-    new webpack.optimize.CommonsChunkPlugin('vendor', isProduction ? '[name].[chunkhash:10].js' : '[name].js', Infinity),
-    new ExtractTextPlugin('[name].[contenthash:10].css', {
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: isProduction ? '[name].[chunkhash:10].js' : '[name].js',
+      minChunks: Infinity
+    }),
+    new ExtractTextWebpackPlugin('[name].[contenthash:10].css', {
       allChunks: true,
       disable: !isProduction
     }),
@@ -111,15 +134,17 @@ let webpackConfig = {
       chunks: ['app', 'vendor', 'hot']
     }),
     new webpack.DefinePlugin({
-      'process.env.API_URL': process.env.API_URL ? JSON.stringify(process.env.API_URL) : null,
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'GA_TRACKING_CODE': process.env.GA_TRACKING_CODE ? JSON.stringify(process.env.GA_TRACKING_CODE) : null
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        API_URL: process.env.API_URL ? JSON.stringify(process.env.API_URL) : null,
+        GA_TRACKING_CODE: process.env.GA_TRACKING_CODE ? JSON.stringify(process.env.GA_TRACKING_CODE) : null
+      }
     }),
-    isomorphicToolsPlugin
+    webpackIsomorphicToolsPlugin
   ],
   resolve: {
-    extensions: ['', '.json', '.css', '.scss', '.js'],
-    modulesDirectories: ['node_modules', 'src']
+    modules: ['node_modules', path.resolve(__dirname, 'src')],
+    extensions: ['.js', '.json', '.css', '.scss']
   },
   stats: {
     children: false
@@ -127,17 +152,19 @@ let webpackConfig = {
 }
 
 if (isProduction) {
-  webpackConfig.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
-  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    sourceMap: false,
-    compress: {
-      warnings: false
-    }
-  }))
+  config.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
+      compress: {
+        warnings: false
+      }
+    })
+  )
 } else {
-  webpackConfig.devtool = 'eval-source-map'
-  webpackConfig.entry.hot = 'webpack/hot/only-dev-server'
-  webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin())
+  config.devtool = 'eval-source-map'
+  config.entry.hot = 'webpack/hot/only-dev-server'
+  config.plugins.push(new webpack.HotModuleReplacementPlugin())
 }
 
-export default webpackConfig
+export default config

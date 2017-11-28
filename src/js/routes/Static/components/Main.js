@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { FormattedMessage, defineMessages } from 'react-intl'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
-import Layout from '../../../components/Layout'
+import Layout from 'components/Layout'
 
 const messages = defineMessages({
   title: {
@@ -17,12 +17,13 @@ const messages = defineMessages({
   }
 })
 
-export default class Main extends Component {
+export default class extends Component {
   render() {
     return (
       <Layout>
         <div>
-          <FormattedMessage {...messages.title} /><br />
+          <FormattedMessage {...messages.title} />
+          <br />
           <Link to="/test">
             <FormattedMessage {...messages.link} />
           </Link>

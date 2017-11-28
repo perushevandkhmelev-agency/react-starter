@@ -3,15 +3,15 @@ import '../styles/globals'
 
 import co from 'co'
 import React from 'react'
-import { render } from 'react-dom'
-import classnames from 'classnames/dedupe'
+import { hydrate } from 'react-dom'
+import { matchRoutes } from 'react-router-config'
+import { Router } from 'react-router'
 
 import renderApp from './render'
 import createRoutes from './routes'
 import createStore from './store'
 import browserHistory from './utils/browserHistory'
 import progress from './utils/progress'
-import matchRoutes from './utils/matchRoutes'
 import analytics from './utils/analytics'
 import IntlUtils from './utils/IntlUtils'
 
@@ -21,45 +21,30 @@ const routes = createRoutes(store)
 let initial = true
 
 IntlUtils().then(() => {
-  browserHistory.listen(co.wrap(listen))
+  const wrappedListen = co.wrap(listen)
+  wrappedListen(browserHistory.location)
+  browserHistory.listen(wrappedListen)
 })
 
-function *listen(location) {
-  let [error, redirectLocation, state] = yield matchRoutes(browserHistory, routes, location.path)
-
-  // Handle browser redirect
-  if (redirectLocation) {
-    browserHistory.push(redirectLocation)
-    return
+function* listen(location) {
+  if (!initial) {
+    progress.start()
   }
 
+  const branch = matchRoutes(routes, location.pathname + location.search)
+  const component = yield renderApp(store, routes, branch, initial)
+
   try {
-    if (error) {
-      throw error
-    }
-
-    if (!initial) {
-      progress.start()
-    }
-
-    render(
-      yield renderApp(store, state, browserHistory, initial),
-      document.getElementById('Root')
-    )
-
+    hydrate(<Router history={browserHistory}>{component}</Router>, document.getElementById('Root'))
   } catch (error) {
     if (console && console.error) {
       console.error(error)
     }
   } finally {
-    const {
-      meta: {
-        title
-      }
-    } = store.getState()
+    const { meta: { title } } = store.getState()
 
     document.title = title
-    analytics.hit(state.location.pathname + state.location.search, title)
+    analytics.hit(location.pathname + location.search, title)
 
     if (!initial) {
       progress.decrement()

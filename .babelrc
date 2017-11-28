@@ -1,13 +1,21 @@
 {
-  "presets": [
-    "es2015",
-    "react"
-  ],
+  "presets": ["react", "env"],
   "plugins": [
     "transform-decorators-legacy",
     "transform-object-rest-spread",
     "transform-class-properties",
     "add-module-exports",
+    [
+      "module-resolver",
+      {
+        "root": ["./src/js"],
+        "alias": {
+          "assets": "./src/assets",
+          "styles": "./src/styles",
+          "translate": "./intl"
+        }
+      }
+    ],
     [
       "react-intl",
       {

@@ -1,9 +1,10 @@
 # Projectname frontend application
+
 * `git clone git@bitbucket.org:projectname/projectname.git`
 * `cd projectname`
-* `npm install`
+* `yarn`
 * put `.env` file with contents given below
-* `npm start`
+* `yarn dev`
 
 ### .env
 
