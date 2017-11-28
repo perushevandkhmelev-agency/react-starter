@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { createSelector, createStructuredSelector } from 'reselect'
 import { renderRoutes } from 'react-router-config'
 import Transition from 'react-transition-group'
+import Helmet from 'react-helmet'
 import get from 'lodash/get'
 
 import Modal from './Modal'
@@ -15,17 +16,11 @@ import '../../styles/modal-animation.scss'
 
 const modalSelector = state => state.modal
 
-const modalComponentSelector = createSelector(
-  modalSelector, (modal) => modalComponentFromKey(get(modal, 'component'))
-)
+const modalComponentSelector = createSelector(modalSelector, modal => modalComponentFromKey(get(modal, 'component')))
 
-const modalPropsSelector = createSelector(
-  modalSelector, (modal) => get(modal, 'props', {})
-)
+const modalPropsSelector = createSelector(modalSelector, modal => get(modal, 'props', {}))
 
-const modalUidSelector = createSelector(
-  modalSelector, (modal) => get(modal, 'uid')
-)
+const modalUidSelector = createSelector(modalSelector, modal => get(modal, 'uid'))
 
 const mapStateToProps = createStructuredSelector({
   component: modalComponentSelector,
@@ -36,7 +31,12 @@ const mapStateToProps = createStructuredSelector({
 @connect(mapStateToProps, ModalAction)
 export default class Root extends React.Component {
   render() {
-    return this.props.error ? this._renderError() : this._renderApplication()
+    return (
+      <section className="max-height">
+        <Helmet title="Project name" />
+        {this.props.error ? this._renderError() : this._renderApplication()}
+      </section>
+    )
   }
 
   _renderError() {

@@ -3,10 +3,10 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import { matchRoutes } from 'react-router-config'
 import { bindActionCreators } from 'redux'
+import Helmet from 'react-helmet'
 
 import renderApp from './render'
 import createStore from './store'
-import metaFromState from './utils/metaFromState'
 import { loadTranslations } from './utils/IntlUtils'
 import * as MiscActions from './actions/misc'
 import config from './config'
@@ -46,7 +46,7 @@ export default function() {
     } else {
       this.state.body = markup
       this.state.storeState = JSON.stringify(store.getState())
-      this.state.meta = metaFromState(store.getState())
+      this.state.head = Helmet.rewind()
 
       if (store.getState().error.code) {
         this.throw('Reject', store.getState().error.code || 404)

@@ -1,7 +1,6 @@
 import {
   SYNC_TIME,
   MISC_SET_LOCALE,
-  MISC_SET_META,
   MISC_SET_CONFIG
 } from '../constants/ActionTypes'
 
@@ -32,12 +31,5 @@ export function setLocale(nextLocale, translations) {
         translations: translations
       })
     }
-  }
-}
-
-export function setMeta(meta) {
-  return {
-    type: MISC_SET_META,
-    data: meta
   }
 }
