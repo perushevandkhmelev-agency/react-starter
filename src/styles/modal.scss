@@ -126,7 +126,7 @@ body .modal-enter.modal-enter-active {
   }
 }
 
-body .modal-leave {
+body .modal-exit {
   z-index: $modalZIndex;
   opacity: 1;
 
@@ -135,7 +135,7 @@ body .modal-leave {
   }
 }
 
-body .modal-leave.modal-leave-active {
+body .modal-exit.modal-exit-active {
   opacity: 0.01;
   transition: opacity 0.25s;
 }

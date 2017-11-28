@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import classnames from 'classnames'
 import get from 'lodash/get'
 import uniqueId from 'lodash/uniqueId'
@@ -43,22 +44,16 @@ export const middleware = store => next => action => {
   }
 }
 
-const TRANSITION_KEYS = [
-  'transitionName',
-  'transitionAppear',
-  'transitionAppearTimeout',
-  'transitionEnter',
-  'transitionEnterTimeout',
-  'transitionLeave',
-  'transitionLeaveTimeout'
-]
+const TRANSITION_KEYS = ['classNames', 'appear', 'enter', 'exit', 'timeout']
 
 const DEFAULT_TRANSITION = {
-  transitionEnter: true,
-  transitionLeave: true,
-  transitionName: 'modal',
-  transitionEnterTimeout: 250,
-  transitionLeaveTimeout: 250
+  enter: true,
+  exit: true,
+  classNames: 'modal',
+  timeout: {
+    enter: 250,
+    exit: 250
+  }
 }
 
 import '../../styles/mount.scss'
@@ -117,9 +112,7 @@ export default class extends Component {
           className={classnames('mount__content max-height', this.props.contentClassName, { 'is-mounted': isMounted })}>
           {this.props.children}
         </div>
-        {/*<ReactCSSTransitionGroup {...this.state.transitionOptions}>*/}
-        {this.state.stack.map(this._renderStackItem)}
-        {/*</ReactCSSTransitionGroup>*/}
+        <TransitionGroup>{this.state.stack.map(this._renderStackItem)}</TransitionGroup>
       </section>
     )
   }
@@ -128,9 +121,9 @@ export default class extends Component {
     const itemIndex = this.state.stack.indexOf(item)
     const isMounted = this.state.mounted[get(this.state, `stack[${itemIndex + 1}].key`, null)] || false
     return (
-      <div className={classnames('mount__layer', { 'is-mounted': isMounted })} key={item.key}>
-        {item.component}
-      </div>
+      <CSSTransition key={item.key} {...this.state.transitionOptions}>
+        <div className={classnames('mount__layer', { 'is-mounted': isMounted })}>{item.component}</div>
+      </CSSTransition>
     )
   }
 
