@@ -1,0 +1,29 @@
+@import 'config/mixins';
+
+.mount {
+  &__layer {
+    z-index: $modalZIndex;
+
+    @include respond-to(mobile) {
+      height: 100%;
+    }
+
+    @include respond-to(desktop) {
+      position: relative;
+    }
+  }
+
+  @include respond-to(mobile) {
+    &__content.is-mounted,
+    &__layer.is-mounted {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      visibility: hidden;
+      overflow: hidden;
+    }
+  }
+}

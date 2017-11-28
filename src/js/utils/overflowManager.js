@@ -10,11 +10,6 @@ export function incrementOverflowCount(shouldScroll = true) {
 
     const style = window.getComputedStyle(document.body)
     const overflowStyle = style.getPropertyValue('overflow')
-
-    if (shouldScroll || overflowStyle === 'visible'){
-      document.body.scrollTop = 0
-    }
-
   }
 }
 

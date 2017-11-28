@@ -1,68 +1,54 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { createSelector, createStructuredSelector } from 'reselect'
-import get from 'lodash/get'
+import { findDOMNode } from 'react-dom'
 import kebabCase from 'lodash/kebabCase'
-
 import Layout from './Layout'
-import { incrementOverflowCount, decrementOverflowCount } from '../utils/overflowManager'
-import analytics from '../utils/analytics'
+import { incrementOverflowCount, decrementOverflowCount } from 'utils/overflowManager'
+import analytics from 'utils/analytics'
+import 'styles/modal.scss'
 
-import '../../styles/modal.scss'
-
-const modalSelector = state => state.modal
-const modalComponentNameSelector = createSelector(
-  modalSelector, (modal) => get(modal, 'component')
-)
-
-const mapStateToProps = createStructuredSelector({
-  componentName: modalComponentNameSelector
-})
-
-@connect(mapStateToProps)
-export default class Modal extends React.Component {
-  static propTypes = {
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func
-  };
-
-  render() {
-    const modalClassName = get(this.props.with, 'modalClassName', get(this.props.with, 'WrappedComponent.modalClassName'))
-    return (
-      <div className="modal" onClick={this.props.onClose}>
-        <div className="modal__backdrop" />
-        <div className="modal__layout">
-          <div className="modal__container">
-            <Layout.Modal className={modalClassName} onClick={event => event.stopPropagation()}>
-              {this.props.children}
-              <div className="modal__close" onClick={this.props.onClose}>&times;</div>
-            </Layout.Modal>
-          </div>
-        </div>
-      </div>
-    )
+export default class extends Component {
+  static contextTypes = {
+    mount: PropTypes.object
   }
 
   componentDidMount() {
-    incrementOverflowCount(false)
+    incrementOverflowCount()
 
-    this.handleKeydown = this._handleKeydown.bind(this)
     window.addEventListener('keydown', this.handleKeydown, true)
 
-    analytics.hit(`/virtual/modal/${kebabCase(this.props.componentName)}`, this.props.componentName)
+    analytics.hit(`/virtual/modal/${kebabCase(this.props.name)}`, this.props.name)
   }
 
   componentWillUnmount() {
     decrementOverflowCount()
 
     window.removeEventListener('keydown', this.handleKeydown, true)
-    document.body.style.overflow = 'visible'
   }
 
-  _handleKeydown(event) {
-    if (this.props.onClose && (event.key === 'Escape' || event.keyCode === 27)) {
-      this.props.onClose()
+  render() {
+    return (
+      <div className="modal" onClick={this.context.mount.pop}>
+        <div className="modal__backdrop" />
+        <div className="modal__container">
+          <div className="modal__layout">
+            <div className="modal__content">
+              <Layout.Modal className={this.props.className} onClick={event => event.stopPropagation()}>
+                {this.props.children}
+                <div className="modal__close" onClick={this.context.mount.pop}>
+                  &times;
+                </div>
+              </Layout.Modal>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  _handleKeydown = event => {
+    if (event.key === 'Escape' || event.keyCode === 27) {
+      this.context.mount.pop()
     }
   }
 }

@@ -1,10 +1,9 @@
-@import "config/variables";
+@import 'config/mixins';
 
 @keyframes modal-fadein {
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }
@@ -23,60 +22,71 @@
   }
 }
 
-.modal {
-  animation: modal-enter 0.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+@mixin modal-fixed() {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  overflow-y: auto;
+}
 
-  &, &__layout, &__container {
+.modal {
+  @include respond-to(desktop) {
+    position: fixed;
+    z-index: $modalZIndex;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &,
+  &__container,
+  &__layout,
+  &__content {
     height: 100%;
   }
 
   &__close {
     position: absolute;
-    right: 12px;
     top: 6px;
-
+    right: 12px;
     cursor: pointer;
-
-    font-size: 38px;
-    line-height: 1;
-    font-weight: normal;
+    transition: color 0.2s ease-out;
     color: rgba(black, 0.3);
+    font-size: 38px;
+    font-weight: normal;
+    line-height: 1;
 
-    transition: color .2s ease-out;
-
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       color: black;
     }
   }
 
-  &__content {
-    position: relative;
-  }
-
-  @media (min-width: $page-desktop) {
-    position: fixed;
-    z-index: $modalZIndex;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-
-    overflow: hidden;
-    overflow-y: auto;
-
-    animation: none;
-
+  @include respond-to(desktop) {
     &__backdrop {
       position: fixed;
-      left: 0;
       top: 0;
       right: 0;
       bottom: 0;
-
+      left: 0;
+      animation: modal-fadein 0.3s;
       background: rgba(0, 0, 0, 0.4);
+    }
 
-      backface-visibility: hidden;
-      animation: modal-fadein .3s;
+    &__container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     &__layout {
@@ -84,20 +94,48 @@
       width: 100%;
       height: 100%;
       padding: 50px 0;
-
       animation: modal-enter 0.5s cubic-bezier(0.1, 0.9, 0.2, 1);
     }
 
-    &__container {
+    &__content {
       position: relative;
       display: table-cell;
       width: 100%;
-
-      vertical-align: middle;
-      text-align: center;
-
       transform: translateZ(0);
+      text-align: center;
+      vertical-align: middle;
     }
-
   }
+}
+
+// Modal transition
+
+body .modal-enter {
+  @include respond-to(mobile) {
+    @include modal-fixed;
+    opacity: 0;
+    transform: translate(0, 50px);
+  }
+}
+
+body .modal-enter.modal-enter-active {
+  @include respond-to(mobile) {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: transform 0.25s ease-out, opacity 0.25s;
+  }
+}
+
+body .modal-leave {
+  z-index: $modalZIndex;
+  opacity: 1;
+
+  @include respond-to(mobile) {
+    @include modal-fixed;
+  }
+}
+
+body .modal-leave.modal-leave-active {
+  opacity: 0.01;
+  transition: opacity 0.25s;
 }
