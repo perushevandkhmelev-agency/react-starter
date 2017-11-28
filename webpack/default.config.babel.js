@@ -19,7 +19,7 @@ if (!isProduction) {
 let config = {
   context: path.resolve(__dirname, '../src'),
   entry: {
-    app: path.resolve(__dirname, '../src/js/app.client.js'),
+    app: ['react-hot-loader/patch', path.resolve(__dirname, '../src/js/app.client.js')],
     server: path.resolve(__dirname, '../src/js/app.server.js'),
     vendor: [
       'babel-polyfill',

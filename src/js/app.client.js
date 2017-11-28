@@ -1,14 +1,14 @@
 import 'normalize.css'
-import '../styles/globals'
+import 'styles/globals'
 
 import React from 'react'
-import { hydrate } from 'react-dom'
+import { hydrate, render } from 'react-dom'
 import { matchRoutes } from 'react-router-config'
 import { Router } from 'react-router'
 import Helmet from 'react-helmet'
+import get from 'lodash/get'
 
 import renderApp from './render'
-import createRoutes from './routes'
 import createStore from './store'
 import browserHistory from './utils/browserHistory'
 import progress from './utils/progress'
@@ -16,26 +16,32 @@ import analytics from './utils/analytics'
 import IntlUtils from './utils/IntlUtils'
 
 const store = createStore(window.storeState)
-const routes = createRoutes(store)
 
 let initial = true
 
 async function app() {
   await IntlUtils()
-  await handleHistoryChange(browserHistory.location)
-  browserHistory.listen(handleHistoryChange)
+  await run(browserHistory.location)
+  browserHistory.listen(run)
 }
 
-async function handleHistoryChange(location) {
-  if (!initial) {
+async function run(location, options) {
+  const isHot = get(options, 'hot', false)
+  const showProgress = !initial && !isHot
+
+  if (showProgress) {
     progress.start()
   }
 
+  const createRoutes = require('./routes')
+  const renderApp = require('./render')
+  const routes = createRoutes(store)
   const branch = matchRoutes(routes, location.pathname + location.search)
-  const component = await renderApp(store, routes, branch, initial)
+  const component = await renderApp({ store, routes, branch, initial }, isHot)
 
   try {
-    hydrate(<Router history={browserHistory}>{component}</Router>, document.getElementById('Root'))
+    const renderMethod = initial ? hydrate : render
+    renderMethod(<Router history={browserHistory}>{component}</Router>, document.getElementById('Root'))
   } catch (error) {
     if (console && console.error) {
       console.error(error)
@@ -46,7 +52,7 @@ async function handleHistoryChange(location) {
     document.title = title
     analytics.hit(location.pathname + location.search, title)
 
-    if (!initial) {
+    if (showProgress) {
       progress.decrement()
     }
 
@@ -55,3 +61,7 @@ async function handleHistoryChange(location) {
 }
 
 app()
+
+if (module.hot) {
+  module.hot.accept(['./routes', './render'], () => run(browserHistory.location, { hot: true }))
+}
