@@ -6,7 +6,6 @@ import koaEjs from 'koa-ejs'
 import koaMorgan from 'koa-morgan'
 
 import appServer from '../src/js/app.server'
-import proxy from './proxy'
 import config from '../src/js/config'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -48,11 +47,6 @@ koaEjs(app, {
  * Serve static assets from `public` directory
  */
 app.use(koaStatic(publicPath, { maxage: 2 * 60 * 60 * 1000 }))
-
-/**
- * Serve API
- */
-// app.use(proxy('/api/*', config.apiUrl))
 
 /**
  * Prerender react app
