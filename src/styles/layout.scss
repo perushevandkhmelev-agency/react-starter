@@ -1,4 +1,4 @@
-@import "config/mixins";
+@import 'config/mixins';
 
 .layout-grow {
   display: flex;
@@ -11,7 +11,8 @@
   flex-direction: column;
   height: 100%;
 
-  &__header, &__footer {
+  &__header,
+  &__footer {
     flex-shrink: 0;
   }
 
@@ -31,33 +32,28 @@
     position: relative;
     z-index: 1;
   }
-
-  &--landing &__header {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-  }
-
-  &--school &__header {
-    @include respond-to(desktop) {
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-    }
-  }
-
-  &--school &__content {
-    background-color: white;
-  }
-
-  &--school &__footer {
-    position: relative;
-    z-index: 3;
-  }
 }
 
 .layout-container {
   @include container;
+}
+
+.layout-modal {
+  position: relative;
+  padding: 40px 20px;
+  text-align: left;
+  background-color: white;
+
+  @include respond-to(mobile) {
+    min-height: 100%;
+  }
+
+  @include respond-to(desktop) {
+    width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 40px;
+    padding-left: 40px;
+    border-radius: 10px;
+  }
 }

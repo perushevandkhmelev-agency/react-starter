@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-
 import 'styles/layout.scss'
 
 export default class Layout extends Component {
@@ -30,3 +29,4 @@ const component = type =>
   }
 
 Layout.Container = component('container')
+Layout.Modal = component('modal')
