@@ -1,11 +1,15 @@
-@import "config/variables";
+@import 'config/variables';
 
-@keyframes nprogress-spinner {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes :global(nprogress-spinner) {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.nprogress {
+:global .nprogress {
   &__bar {
     z-index: 9999;
     position: fixed;
@@ -30,7 +34,7 @@
     height: 100%;
 
     box-shadow: 0 0 10px $color-progress, 0 0 5px $color-progress;
-    opacity: 1.0;
+    opacity: 1;
 
     transform: rotate(3deg) translate(0px, -4px);
   }
@@ -63,7 +67,8 @@
     }
   }
 
-  &__bar, &__spinner {
+  &__bar,
+  &__spinner {
     .nprogress-custom-parent & {
       position: absolute;
     }
@@ -71,11 +76,11 @@
 }
 
 /* Make clicks pass-through */
-#nprogress {
+:global #nprogress {
   pointer-events: none;
 }
 
-.nprogress-custom-parent {
+:global .nprogress-custom-parent {
   overflow: hidden;
   position: relative;
 }
