@@ -6,6 +6,7 @@ import React from 'react'
 import { hydrate } from 'react-dom'
 import { matchRoutes } from 'react-router-config'
 import { Router } from 'react-router'
+import Helmet from 'react-helmet'
 
 import renderApp from './render'
 import createRoutes from './routes'
@@ -41,7 +42,7 @@ function* listen(location) {
       console.error(error)
     }
   } finally {
-    const { meta: { title } } = store.getState()
+    const { title } = Helmet.peek()
 
     document.title = title
     analytics.hit(location.pathname + location.search, title)
