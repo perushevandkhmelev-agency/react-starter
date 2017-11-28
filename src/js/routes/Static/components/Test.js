@@ -7,12 +7,10 @@ import Layout from 'components/Layout'
 const messages = defineMessages({
   title: {
     id: 'test.title',
-    description: 'Test page',
     defaultMessage: 'Тестовая страница'
   },
   back: {
     id: 'test.back',
-    description: 'Main page',
     defaultMessage: 'Главная страница'
   }
 })
