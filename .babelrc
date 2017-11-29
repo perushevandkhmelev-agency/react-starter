@@ -9,10 +9,9 @@
     [
       "module-resolver",
       {
-        "root": ["./src/js"],
+        "root": ["./"],
         "alias": {
-          "assets": "./src/assets",
-          "styles": "./src/styles",
+          "styles": "./styles",
           "translate": "./intl"
         }
       }
@@ -20,7 +19,7 @@
     [
       "react-intl",
       {
-        "messagesDir": "./intl/"
+        "messagesDir": "./intl/src"
       }
     ]
   ]

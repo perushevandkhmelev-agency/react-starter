@@ -11,10 +11,10 @@ import get from 'lodash/get'
 
 import renderApp from './render'
 import createStore from './store'
-import browserHistory from './utils/browserHistory'
-import progress from './utils/progress'
-import analytics from './utils/analytics'
-import IntlUtils from './utils/IntlUtils'
+import browserHistory from 'utils/browserHistory'
+import progress from 'utils/progress'
+import analytics from 'utils/analytics'
+import IntlUtils from 'utils/IntlUtils'
 
 const store = createStore(window.storeState)
 
@@ -34,7 +34,7 @@ async function run(location, options) {
     progress.start()
   }
 
-  const createRoutes = require('./routes')
+  const createRoutes = require('../routes')
   const renderApp = require('./render')
   const routes = createRoutes(store)
   const branch = matchRoutes(routes, location.pathname + location.search)
@@ -64,5 +64,5 @@ async function run(location, options) {
 app()
 
 if (module.hot) {
-  module.hot.accept(['./routes', './render'], () => run(browserHistory.location, { hot: true }))
+  module.hot.accept(['../routes', './render'], () => run(browserHistory.location, { hot: true }))
 }

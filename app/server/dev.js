@@ -14,4 +14,3 @@ assets.serve(() => {
   console.log('Starting server...')
   server = fork('./scripts/start.js', { env })
 })
-

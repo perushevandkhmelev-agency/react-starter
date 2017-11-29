@@ -7,12 +7,12 @@ import Helmet from 'react-helmet'
 
 import renderApp from './render'
 import createStore from './store'
-import { loadTranslations } from './utils/IntlUtils'
-import * as MiscActions from './actions/misc'
 import config from './config'
+import { loadTranslations } from 'utils/IntlUtils'
+import * as MiscActions from 'actions/misc'
 
 export default function() {
-  require('./utils/IntlUtils').default()
+  require('utils/IntlUtils').default()
 
   return async function(ctx, next) {
     let store = createStore()
@@ -21,7 +21,7 @@ export default function() {
 
     // TODO: Place to preload user and current session
 
-    let createRoutes = require('./routes.js')
+    let createRoutes = require('../routes')
     let routes = createRoutes(store)
     let branch = matchRoutes(routes, ctx.request.originalUrl)
 

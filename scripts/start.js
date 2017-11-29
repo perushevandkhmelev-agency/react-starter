@@ -5,14 +5,14 @@ require('isomorphic-fetch')
 
 if (process.env.NODE_ENV === 'production' || process.env.CHILD) {
   var WebpackIsomorphicTools = require('webpack-isomorphic-tools')
-  var context = require('path').resolve(__dirname, '../src')
+  var context = require('path').resolve(__dirname, '../')
 
-  global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic-tools.config')).server(
+  global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../app/webpack/isomorphic-tools.config')).server(
     context,
     function() {
-      require('../server')
+      require('../app/server')
     }
   )
 } else {
-  require('../server/dev')
+  require('../app/server/dev')
 }

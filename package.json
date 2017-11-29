@@ -22,9 +22,9 @@
   },
   "config": {
     "iconsServer": "http://fontello.com",
-    "iconsConfig": "src/assets/fonts/icons/config.json",
+    "iconsConfig": "assets/fonts/icons/config.json",
     "iconsLocation": [
-      "src/assets/fonts/icons"
+      "assets/fonts/icons"
     ]
   },
   "dependencies": {
