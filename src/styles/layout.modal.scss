@@ -1,0 +1,21 @@
+@import 'config/mixins';
+
+.root {
+  position: relative;
+  padding: 40px 20px;
+  text-align: left;
+  background-color: white;
+
+  @include respond-to(mobile) {
+    min-height: 100%;
+  }
+
+  @include respond-to(desktop) {
+    width: 620px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 40px;
+    padding-left: 40px;
+    border-radius: 10px;
+  }
+}

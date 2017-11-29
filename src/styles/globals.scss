@@ -60,22 +60,24 @@ h6 {
   margin: 0;
 }
 
-:global .max-height {
-  height: 100%;
-}
-
-:global .hot-fix {
-  display: flex;
-}
-
-@media (max-width: $page-desktop - 1) {
-  :global .only-desktop {
-    display: none !important;
+:global {
+  .max-height {
+    height: 100%;
   }
-}
 
-@media (min-width: $page-desktop) {
-  :global .only-mobile {
-    display: none !important;
+  .hot-fix {
+    display: flex;
+  }
+
+  @media (max-width: $page-desktop - 1) {
+    .only-desktop {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: $page-desktop) {
+    .only-mobile {
+      display: none !important;
+    }
   }
 }

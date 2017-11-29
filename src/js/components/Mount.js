@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import CSSModules from 'react-css-modules'
 import classnames from 'classnames'
 import get from 'lodash/get'
 import uniqueId from 'lodash/uniqueId'
@@ -9,8 +10,11 @@ import omit from 'lodash/omit'
 import without from 'lodash/without'
 import findLast from 'lodash/findLast'
 import dropRightWhile from 'lodash/dropRightWhile'
-
 import { ROUTER_NAVIGATE } from '../constants/ActionTypes'
+
+import styles from 'styles/mount.scss'
+import modal from 'styles/modal.scss'
+
 export const MOUNT_SET_ACTIONS = 'MOUNT_SET_ACTIONS'
 export const MOUNT_REMOVE_ACTIONS = 'MOUNT_REMOVE_ACTIONS'
 
@@ -49,15 +53,19 @@ const TRANSITION_KEYS = ['classNames', 'appear', 'enter', 'exit', 'timeout']
 const DEFAULT_TRANSITION = {
   enter: true,
   exit: true,
-  classNames: 'modal',
+  classNames: {
+    enter: modal['enter'],
+    enterActive: modal['enter-active'],
+    exit: modal['exit'],
+    exitActive: modal['exit-active']
+  },
   timeout: {
     enter: 250,
     exit: 250
   }
 }
 
-import '../../styles/mount.scss'
-
+@CSSModules(styles)
 export default class extends Component {
   static contextTypes = {
     store: PropTypes.object
@@ -106,10 +114,11 @@ export default class extends Component {
   render() {
     const isMounted = this.state.mounted[get(this.state, 'stack[0].key', null)] || false
     return (
-      <section className={classnames('mount max-height', this.props.className)}>
+      <section className={classnames('max-height', this.props.className)}>
         <div ref="mobile" className="only-mobile" />
         <div
-          className={classnames('mount__content max-height', this.props.contentClassName, { 'is-mounted': isMounted })}>
+          className={classnames('max-height', this.props.contentClassName)}
+          styleName={isMounted ? 'content-mounted' : null}>
           {this.props.children}
         </div>
         <TransitionGroup>{this.state.stack.map(this._renderStackItem)}</TransitionGroup>
@@ -122,7 +131,7 @@ export default class extends Component {
     const isMounted = this.state.mounted[get(this.state, `stack[${itemIndex + 1}].key`, null)] || false
     return (
       <CSSTransition key={item.key} {...this.state.transitionOptions}>
-        <div className={classnames('mount__layer', { 'is-mounted': isMounted })}>{item.component}</div>
+        <div styleName={isMounted ? 'layer-mounted' : 'layer'}>{item.component}</div>
       </CSSTransition>
     )
   }
@@ -145,8 +154,8 @@ export default class extends Component {
       this.setState({ transitionOptions }, () => {
         this.setState({ stack })
 
-        if (transitionOptions.transitionEnter) {
-          this._mountTimeout = setTimeout(this._didMount, transitionOptions.transitionEnterTimeout)
+        if (transitionOptions.timeout && transitionOptions.timeout.enter) {
+          this._mountTimeout = setTimeout(this._didMount, transitionOptions.timeout.enter)
         } else {
           this._didMount(stack)
         }
