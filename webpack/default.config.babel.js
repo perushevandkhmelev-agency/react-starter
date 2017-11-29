@@ -19,8 +19,8 @@ if (!isProduction && process.env.EXTERNAL === 'true') {
 let config = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: ['react-hot-loader/patch', path.resolve(__dirname, '../js/app.client.js')],
-    server: path.resolve(__dirname, '../js/app.server.js'),
+    app: ['react-hot-loader/patch', path.resolve(__dirname, '../app/app.client.js')],
+    server: path.resolve(__dirname, '../app/app.server.js'),
     vendor: [
       'babel-polyfill',
       'isomorphic-fetch',

@@ -1,6 +1,6 @@
 import nprogress from 'nprogress'
 import defer from 'lodash/defer'
-import '../../styles/nprogress.scss'
+import 'styles/nprogress.scss'
 
 nprogress.configure({
   template: `
@@ -12,7 +12,6 @@ nprogress.configure({
     </div>
   `
 })
-
 
 let index = 0
 
@@ -54,4 +53,3 @@ export default {
   done,
   wrap
 }
-

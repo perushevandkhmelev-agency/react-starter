@@ -5,8 +5,8 @@ import koaStatic from 'koa-static'
 import koaEjs from 'koa-ejs'
 import koaMorgan from 'koa-morgan'
 
-import appServer from '../../js/app.server'
-import config from '../../js/config'
+import appServer from '../app.server'
+import config from '../config'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const publicPath = path.resolve(__dirname, '../../public')

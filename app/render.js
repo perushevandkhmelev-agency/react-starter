@@ -4,9 +4,9 @@ import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
 import { renderRoutes } from 'react-router-config'
 import { AppContainer } from 'react-hot-loader'
-import ErrorContext from './components/ErrorContext'
-import performRouteHandlerStaticMethod from './utils/performRouteHandlerStaticMethod'
-import { beforeNavigate, navigate } from './actions/router'
+import ErrorContext from 'components/ErrorContext'
+import performRouteHandlerStaticMethod from 'utils/performRouteHandlerStaticMethod'
+import { beforeNavigate, navigate } from 'actions/router'
 import formats from './formats'
 
 export default async function({ store, routes, branch, initial }, hot = false) {
