@@ -7,5 +7,5 @@ intl/src
 .fontello
 
 # webpack-isomorphic-tools
-webpack/webpack-stats.json
-webpack/webpack-assets.json
+app/webpack/webpack-stats.json
+app/webpack/webpack-assets.json

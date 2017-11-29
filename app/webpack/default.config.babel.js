@@ -17,10 +17,10 @@ if (!isProduction && process.env.EXTERNAL === 'true') {
 }
 
 let config = {
-  context: path.resolve(__dirname, '../'),
+  context: path.resolve(__dirname, '../../'),
   entry: {
-    app: ['react-hot-loader/patch', path.resolve(__dirname, '../app/app.client.js')],
-    server: path.resolve(__dirname, '../app/app.server.js'),
+    app: ['react-hot-loader/patch', path.resolve(__dirname, '../app.client.js')],
+    server: path.resolve(__dirname, '../app.server.js'),
     vendor: [
       'babel-polyfill',
       'isomorphic-fetch',
@@ -35,7 +35,7 @@ let config = {
     ]
   },
   output: {
-    path: path.resolve(__dirname, '../public/assets'),
+    path: path.resolve(__dirname, '../../public/assets'),
     filename: isProduction ? '[name].[chunkhash:10].js' : '[name].js',
     chunkFilename: isProduction ? '[id].[name].[chunkhash:10].js' : '[id].[name].js',
     publicPath: isProduction ? '/assets/' : `http://${address}:9090/assets/`
@@ -65,14 +65,14 @@ let config = {
                 loader: 'postcss-loader',
                 options: {
                   config: {
-                    path: path.resolve(__dirname, '../postcss.config.js')
+                    path: path.resolve(__dirname, '../../postcss.config.js')
                   }
                 }
               },
               {
                 loader: 'sass-loader',
                 options: {
-                  includePaths: [path.resolve(__dirname, '../styles'), path.resolve(__dirname, '../assets')]
+                  includePaths: [path.resolve(__dirname, '../../styles'), path.resolve(__dirname, '../../assets')]
                 }
               }
             ]
@@ -110,7 +110,7 @@ let config = {
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         use: 'raw-loader',
-        include: path.resolve(__dirname, '../assets/raw')
+        include: path.resolve(__dirname, '../../assets/raw')
       }
     ]
   },
@@ -131,7 +131,7 @@ let config = {
     new HtmlWebpackPlugin({
       inject: false,
       address: address,
-      template: 'views/template.html',
+      template: 'app/views/template.html',
       filename: 'template.html',
       favicon: 'assets/favicon.png',
       chunks: ['app', 'vendor', 'hot']
