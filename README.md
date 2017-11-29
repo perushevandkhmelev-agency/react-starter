@@ -4,7 +4,7 @@
 * `cd projectname`
 * `yarn`
 * put `.env` file with contents given below
-* `yarn dev`
+* `yarn start`
 
 ### .env
 
