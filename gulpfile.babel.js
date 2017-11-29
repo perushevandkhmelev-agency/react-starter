@@ -22,8 +22,8 @@ let exec = require('child_process').exec,
     // Connects to font server to get a fresh token for our editing session.
     // sends current config in the process.
     let getFontToken = `curl --silent --show-error --fail --output .fontello --form "config=@${
-      pkg.config.iconsFonts
-    }/config.json" ${pkg.config.iconsServer} \n`
+      pkg.config.iconsConfig
+    }" ${pkg.config.iconsServer} \n`
 
     return exec(getFontToken + openFont[platform], function(err, stdout, stderr) {
       console.log(stdout)
@@ -38,20 +38,27 @@ let exec = require('child_process').exec,
    * @return {void} logs operations to terminal.
    */
   iconsSave = () => {
-    var script = [
+    var scripts = [
       'if test ! $(which unzip); then echo "Unzip is installed"; exit 128; fi',
       'rm -rf .fontello.src .fontello.zip',
       `curl --silent --show-error --fail --output .fontello.zip ${pkg.config.iconsServer}/$(cat .fontello)/get`,
-      'unzip .fontello.zip -d .fontello.src',
-      `rm -rf ${pkg.config.iconsFonts}`,
-      `rm -rf src/styles/icons.css`,
-      `mv $(find ./.fontello.src -maxdepth 1 -name 'fontello-*')/font/ ${pkg.config.iconsFonts}`,
-      `mv $(find ./.fontello.src -maxdepth 1 -name 'fontello-*')/config.json ${pkg.config.iconsFonts}`,
-      `mv $(find ./.fontello.src -maxdepth 1 -name 'fontello-*')/css/icons-codes.css src/styles/icons.css`,
-      'rm -rf .fontello.src .fontello.zip'
+      'unzip .fontello.zip -d .fontello.src'
     ]
 
-    exec(script.join(' \n '), function(err, stdout, stderr) {
+    // Move typeface to multiple destinations
+    for (var i = 0; i < pkg.config.iconsLocation.length; i++) {
+      scripts.push(
+        `cp $(find ./.fontello.src -maxdepth 1 -name 'fontello-*')/font/*.woff* ${pkg.config.iconsLocation[i]}`
+      )
+    }
+
+    // Clean up
+    scripts = scripts.concat([
+      `mv $(find ./.fontello.src -maxdepth 1 -name 'fontello-*')/config.json ${pkg.config.iconsConfig}`,
+      'rm -rf .fontello.src .fontello.zip'
+    ])
+
+    exec(scripts.join(' \n '), function(err, stdout, stderr) {
       if (stderr) {
         console.error(err, stderr)
       } else {

@@ -1,6 +1,6 @@
 @import 'config/mixins';
 
-@keyframes :global(modal-fadein) {
+@keyframes modal-fadein {
   0% {
     opacity: 0;
   }
@@ -9,7 +9,7 @@
   }
 }
 
-@keyframes :global(modal-enter) {
+@keyframes modal-enter {
   0% {
     transform: translate(0, 50px);
     opacity: 0;
