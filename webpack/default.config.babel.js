@@ -17,10 +17,10 @@ if (!isProduction && process.env.EXTERNAL === 'true') {
 }
 
 let config = {
-  context: path.resolve(__dirname, '../src'),
+  context: path.resolve(__dirname, '../'),
   entry: {
-    app: ['react-hot-loader/patch', path.resolve(__dirname, '../src/js/app.client.js')],
-    server: path.resolve(__dirname, '../src/js/app.server.js'),
+    app: ['react-hot-loader/patch', path.resolve(__dirname, '../js/app.client.js')],
+    server: path.resolve(__dirname, '../js/app.server.js'),
     vendor: [
       'babel-polyfill',
       'isomorphic-fetch',
@@ -45,7 +45,7 @@ let config = {
       {
         test: /\.js$/,
         use: 'babel-loader',
-        include: path.resolve(__dirname, '../src')
+        exclude: /node_modules/
       },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('styles'),
@@ -72,7 +72,7 @@ let config = {
               {
                 loader: 'sass-loader',
                 options: {
-                  includePaths: [path.resolve(__dirname, '../src/styles'), path.resolve(__dirname, '../src/assets')]
+                  includePaths: [path.resolve(__dirname, '../styles'), path.resolve(__dirname, '../assets')]
                 }
               }
             ]
@@ -110,7 +110,7 @@ let config = {
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         use: 'raw-loader',
-        include: path.resolve(__dirname, '../src/assets/raw')
+        include: path.resolve(__dirname, '../assets/raw')
       }
     ]
   },
@@ -146,7 +146,6 @@ let config = {
     webpackIsomorphicToolsPlugin
   ],
   resolve: {
-    modules: ['node_modules', path.resolve(__dirname, 'src')],
     extensions: ['.js', '.json', '.css', '.scss']
   },
   stats: {
