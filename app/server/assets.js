@@ -3,7 +3,7 @@ import path from 'path'
 import mkdirp from 'mkdirp'
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
-import webpackConfig from '../webpack/default.config.babel.js'
+import webpackConfig from '../../webpack/default.config.babel.js'
 import _ from 'lodash'
 import ip from 'ip'
 

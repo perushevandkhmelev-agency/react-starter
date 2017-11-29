@@ -10,9 +10,9 @@ if (process.env.NODE_ENV === 'production' || process.env.CHILD) {
   global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic-tools.config')).server(
     context,
     function() {
-      require('../server')
+      require('../app/server')
     }
   )
 } else {
-  require('../server/dev')
+  require('../app/server/dev')
 }
