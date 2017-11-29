@@ -4,6 +4,7 @@ intl/src
 .DS_Store
 *.env
 *.log
+.fontello
 
 # webpack-isomorphic-tools
 webpack/webpack-stats.json

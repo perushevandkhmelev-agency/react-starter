@@ -1,14 +1,18 @@
-@import "./variables";
+@import './variables';
 
 @mixin respond-to($media) {
   @if $media == mobile {
-    @media (max-width: $page-desktop - 1) { @content; }
-  }
-  @else if $media == desktop {
-    @media (min-width: $page-desktop) { @content; }
-  }
-  @else if $media == desktop-large {
-    @media (min-width: $page-desktop-large) { @content; }
+    @media (max-width: $page-desktop - 1) {
+      @content;
+    }
+  } @else if $media == desktop {
+    @media (min-width: $page-desktop) {
+      @content;
+    }
+  } @else if $media == desktop-large {
+    @media (min-width: $page-desktop-large) {
+      @content;
+    }
   }
 }
 
@@ -47,7 +51,7 @@
 }
 
 @mixin icon() {
-  font-family: 'project-icons';
+  font-family: 'icons';
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -57,15 +61,12 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  &, &:before {
-    vertical-align: top;
-  }
 }
 
 @mixin clearfix() {
-  &:before, &:after {
-    content: "";
+  &:before,
+  &:after {
+    content: '';
     display: table;
   }
   &:after {

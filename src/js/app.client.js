@@ -1,4 +1,5 @@
 import 'normalize.css'
+import 'styles/fonts'
 import 'styles/globals'
 
 import React from 'react'
