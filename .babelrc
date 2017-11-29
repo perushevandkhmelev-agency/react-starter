@@ -9,9 +9,8 @@
     [
       "module-resolver",
       {
-        "root": ["./js"],
+        "root": ["./"],
         "alias": {
-          "assets": "./assets",
           "styles": "./styles",
           "translate": "./intl"
         }
