@@ -30,10 +30,6 @@
       // -->
     </script>
 
-    <% if (htmlWebpackPlugin.files.chunks.hot) { %>
-    <script src="http://<%= htmlWebpackPlugin.options.address || 'localhost' %>:9090/webpack-dev-server.js"></script>
-    <% } %>
-
     <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
     <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
     <% } %>
