@@ -32,7 +32,7 @@ export default function() {
     miscActions.syncTime()
 
     const context = {}
-    const component = await renderApp(store, routes, branch, true)
+    const component = await renderApp({ store, routes, branch, initial: true })
 
     const markup = renderToString(
       <StaticRouter location={ctx.request.originalUrl} context={context}>

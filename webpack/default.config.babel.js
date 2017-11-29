@@ -19,7 +19,7 @@ if (!isProduction) {
 let config = {
   context: path.resolve(__dirname, '../src'),
   entry: {
-    app: path.resolve(__dirname, '../src/js/app.client.js'),
+    app: ['react-hot-loader/patch', path.resolve(__dirname, '../src/js/app.client.js')],
     server: path.resolve(__dirname, '../src/js/app.server.js'),
     vendor: [
       'babel-polyfill',
@@ -49,31 +49,35 @@ let config = {
       },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('styles'),
-        use: ExtractTextWebpackPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader?-autoprefixer',
-              options: {
-                importLoaders: 2
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                config: {
-                  path: path.resolve(__dirname, '../postcss.config.js')
+        use: ['css-hot-loader'].concat(
+          ExtractTextWebpackPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader?-autoprefixer',
+                options: {
+                  importLoaders: 2,
+                  modules: true,
+                  localIdentName: '[name]__[local]--[hash:base64:5]'
+                }
+              },
+              {
+                loader: 'postcss-loader',
+                options: {
+                  config: {
+                    path: path.resolve(__dirname, '../postcss.config.js')
+                  }
+                }
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  includePaths: [path.resolve(__dirname, '../src/styles'), path.resolve(__dirname, '../src/assets')]
                 }
               }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                includePaths: [path.resolve(__dirname, '../src/styles'), path.resolve(__dirname, '../src/assets')]
-              }
-            }
-          ]
-        })
+            ]
+          })
+        )
       },
       {
         test: /\.json$/,
@@ -121,9 +125,8 @@ let config = {
       filename: isProduction ? '[name].[chunkhash:10].js' : '[name].js',
       minChunks: Infinity
     }),
-    new ExtractTextWebpackPlugin('[name].[contenthash:10].css', {
-      allChunks: true,
-      disable: !isProduction
+    new ExtractTextWebpackPlugin(isProduction ? '[name].[contenthash:10].css' : '[name].css', {
+      allChunks: true
     }),
     new HtmlWebpackPlugin({
       inject: false,
@@ -163,7 +166,8 @@ if (isProduction) {
   )
 } else {
   config.devtool = 'eval-source-map'
-  config.entry.hot = 'webpack/hot/only-dev-server'
+  config.entry.hot = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:9090/']
+  config.plugins.push(new webpack.NamedModulesPlugin())
   config.plugins.push(new webpack.HotModuleReplacementPlugin())
 }
 
