@@ -65,7 +65,7 @@ let config = {
                 loader: 'postcss-loader',
                 options: {
                   config: {
-                    path: path.resolve(__dirname, '../../postcss.config.js')
+                    path: path.resolve(__dirname, './postcss.config.js')
                   }
                 }
               },
