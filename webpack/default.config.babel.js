@@ -11,9 +11,9 @@ const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIso
 const isProduction = process.env.NODE_ENV === 'production'
 let address = 'localhost'
 
-if (!isProduction) {
+if (!isProduction && process.env.EXTERNAL === 'true') {
   const ip = require('ip')
-  address = process.env.EXTERNAL === 'true' ? ip.address() : 'localhost'
+  address = ip.address()
 }
 
 let config = {
@@ -166,7 +166,7 @@ if (isProduction) {
   )
 } else {
   config.devtool = 'eval-source-map'
-  config.entry.hot = ['webpack/hot/only-dev-server', 'webpack-dev-server/client?http://localhost:9090/']
+  config.entry.hot = ['webpack/hot/only-dev-server', `webpack-dev-server/client?http://${address}:9090/`]
   config.plugins.push(new webpack.NamedModulesPlugin())
   config.plugins.push(new webpack.HotModuleReplacementPlugin())
 }
