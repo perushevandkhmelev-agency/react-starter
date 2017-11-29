@@ -21,7 +21,7 @@ export default function() {
 
     // TODO: Place to preload user and current session
 
-    let createRoutes = require('../routes.js')
+    let createRoutes = require('../routes')
     let routes = createRoutes(store)
     let branch = matchRoutes(routes, ctx.request.originalUrl)
 
