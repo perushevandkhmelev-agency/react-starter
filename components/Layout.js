@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import classnames from 'classnames'
-import PropTypes from 'prop-types'
 import CSSModules from 'react-css-modules'
 import styles from 'styles/layout.scss'
 import container from 'styles/layout.container.scss'

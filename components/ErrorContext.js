@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-export default class ErrorContext extends React.Component {
+export default class extends Component {
   static get childContextTypes() {
     return {
       error: PropTypes.object

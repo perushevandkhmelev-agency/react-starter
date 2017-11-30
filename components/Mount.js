@@ -121,7 +121,7 @@ export default class extends Component {
           styleName={isMounted ? 'content-mounted' : null}>
           {this.props.children}
         </div>
-        <TransitionGroup>{this.state.stack.map(this._renderStackItem)}</TransitionGroup>
+        <TransitionGroup className="max-height">{this.state.stack.map(this._renderStackItem)}</TransitionGroup>
       </section>
     )
   }
