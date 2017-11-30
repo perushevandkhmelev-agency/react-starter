@@ -1,8 +1,4 @@
-import {
-  ROUTER_BEFORE_NAVIGATE,
-  ROUTER_NAVIGATE,
-  ROUTER_ERROR_RAISE
-} from '../constants/ActionTypes'
+import { ROUTER_BEFORE_NAVIGATE, ROUTER_NAVIGATE, ROUTER_ERROR_RAISE } from 'constants/ActionTypes'
 
 export function beforeNavigate(state, initial) {
   return {

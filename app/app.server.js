@@ -19,8 +19,6 @@ export default function() {
     let miscActions = bindActionCreators(MiscActions, store.dispatch)
     miscActions.setConfig(config)
 
-    // TODO: Place to preload user and current session
-
     let createRoutes = require('../routes')
     let routes = createRoutes(store)
     let branch = matchRoutes(routes, ctx.request.originalUrl)
@@ -54,9 +52,5 @@ export default function() {
 
       await next()
     }
-
-    // } else {
-    //   ctx.throw('Not found', 404)
-    // }
   }
 }

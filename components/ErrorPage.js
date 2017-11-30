@@ -20,7 +20,7 @@ export default class extends Component {
       <div>
         <h1>{this.props.code}</h1>
         <p>
-          <Link to="/">Домой</Link>
+          <Link to="/">Home</Link>
         </p>
       </div>
     )

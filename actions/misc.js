@@ -1,11 +1,4 @@
-import {
-  SYNC_TIME,
-  MISC_SET_LOCALE,
-  MISC_SET_CONFIG
-} from '../constants/ActionTypes'
-
-import { CALL_API } from 'redux-api-middleware'
-import * as api from '../utils/api'
+import { SYNC_TIME, MISC_SET_LOCALE, MISC_SET_CONFIG } from 'constants/ActionTypes'
 
 export function syncTime() {
   return {

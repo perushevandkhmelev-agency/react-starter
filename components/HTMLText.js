@@ -1,20 +1,18 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-export default class HTMLText extends React.Component {
+export default class extends Component {
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   }
 
   static propTypes = {
-    component: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.func
-    ])
-  };
+    component: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
+  }
 
   static defaultProps = {
     component: 'span'
-  };
+  }
 
   render() {
     let { text, html, component, ...props } = this.props
@@ -23,14 +21,11 @@ export default class HTMLText extends React.Component {
     }
 
     if (html) {
-      return React.createElement(
-        this.props.component,
-        {
-          ...props,
-          onClick: this._handleClick.bind(this),
-          dangerouslySetInnerHTML: {__html: html }
-        }
-      )
+      return React.createElement(this.props.component, {
+        ...props,
+        onClick: this._handleClick.bind(this),
+        dangerouslySetInnerHTML: { __html: html }
+      })
     } else {
       return null
     }
