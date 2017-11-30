@@ -11,7 +11,6 @@
     UV_THREADPOOL_SIZE=100
     SERVER_PORT=4000
     API_URL=http://api.projectname
-    PROXY=true
 
 ### How to work with icons
 
