@@ -35,7 +35,7 @@
 .root {
   @include respond-to(desktop) {
     position: fixed;
-    z-index: $modalZIndex;
+    z-index: $z-index-modal;
     top: 0;
     right: 0;
     bottom: 0;
@@ -128,7 +128,7 @@
 }
 
 .exit {
-  z-index: $modalZIndex;
+  z-index: $z-index-modal;
   opacity: 1;
 
   @include respond-to(mobile) {

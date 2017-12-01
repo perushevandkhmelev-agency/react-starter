@@ -1,7 +1,7 @@
 @import 'config/mixins';
 
 .layer {
-  z-index: $modalZIndex;
+  z-index: $z-index-modal;
 
   @include respond-to(mobile) {
     height: 100%;
