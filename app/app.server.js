@@ -9,7 +9,7 @@ import createStore from './store'
 import config from './config'
 import { loadTranslations } from 'utils/IntlUtils'
 import * as MiscActions from 'actions/misc'
-import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+import { ServerStyleSheet } from 'styled-components'
 import injectGlobalStyles from 'utils/injectGlobalStyles'
 
 export default function() {
