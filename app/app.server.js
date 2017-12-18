@@ -4,12 +4,13 @@ import { StaticRouter } from 'react-router'
 import { matchRoutes } from 'react-router-config'
 import { bindActionCreators } from 'redux'
 import Helmet from 'react-helmet'
-
 import renderApp from './render'
 import createStore from './store'
 import config from './config'
 import { loadTranslations } from 'utils/IntlUtils'
 import * as MiscActions from 'actions/misc'
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+import injectGlobalStyles from 'utils/injectGlobalStyles'
 
 export default function() {
   require('utils/IntlUtils').default()
@@ -32,11 +33,19 @@ export default function() {
     const context = {}
     const component = await renderApp({ store, routes, branch, initial: true })
 
+    const sheet = new ServerStyleSheet()
+
+    injectGlobalStyles()
+
     const markup = renderToString(
-      <StaticRouter location={ctx.request.originalUrl} context={context}>
-        {component}
-      </StaticRouter>
+      sheet.collectStyles(
+        <StaticRouter location={ctx.request.originalUrl} context={context}>
+          {component}
+        </StaticRouter>
+      )
     )
+
+    const styleTags = sheet.getStyleTags()
 
     if (context.url) {
       ctx.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
@@ -44,7 +53,7 @@ export default function() {
     } else {
       ctx.state.body = markup
       ctx.state.storeState = JSON.stringify(store.getState())
-      ctx.state.head = Helmet.rewind()
+      ctx.state.head = { ...Helmet.rewind(), styleTags }
 
       if (store.getState().error.code) {
         ctx.response.status = store.getState().error.code || 404

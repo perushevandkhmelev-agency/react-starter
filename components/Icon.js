@@ -1,8 +1,14 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import styled, { injectGlobal } from 'styled-components'
+import { fontFace } from 'polished'
 import config from 'assets/fonts/icons/config.json'
-import CSSModules from 'react-css-modules'
-import styles from 'styles/icons.scss'
+
+injectGlobal`
+  ${fontFace({
+    fontFamily: config.name,
+    fontFilePath: `/assets/fonts/icons/${config.name}`,
+    fileFormats: ['woff', 'woff2']
+  })}
+`
 
 const nameToChar = name => {
   const glyph = config.glyphs.find(item => item.css === name)
@@ -13,9 +19,19 @@ const nameToChar = name => {
   }
 }
 
-@CSSModules(styles)
-export default class extends Component {
-  render() {
-    return <span styleName="root">{nameToChar(this.props.name)}</span>
+export default styled.i`
+  font-family: ${config.name};
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  &:before {
+    content: '${props => nameToChar(props.name)}';
   }
-}
+`

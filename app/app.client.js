@@ -1,7 +1,3 @@
-import 'normalize.css'
-import 'styles/fonts'
-import 'styles/globals'
-
 import React from 'react'
 import { hydrate, render } from 'react-dom'
 import { matchRoutes } from 'react-router-config'

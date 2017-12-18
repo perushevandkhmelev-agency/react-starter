@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
-import CSSModules from 'react-css-modules'
 import kebabCase from 'lodash/kebabCase'
 import Layout from './Layout'
 import { incrementOverflowCount, decrementOverflowCount } from 'utils/overflowManager'
 import analytics from 'utils/analytics'
-import styles from 'styles/modal.scss'
 
-@CSSModules(styles)
 export default class extends Component {
   static contextTypes = {
     mount: PropTypes.object
@@ -30,14 +27,14 @@ export default class extends Component {
 
   render() {
     return (
-      <div styleName="root" onClick={this.context.mount.pop}>
-        <div styleName="backdrop" />
-        <div styleName="container">
-          <div styleName="layout">
-            <div styleName="content">
+      <div className="root" onClick={this.context.mount.pop}>
+        <div className="backdrop" />
+        <div className="container">
+          <div className="layout">
+            <div className="content">
               <Layout.Modal className={this.props.className} onClick={event => event.stopPropagation()}>
                 {this.props.children}
-                <div styleName="close" onClick={this.context.mount.pop}>
+                <div className="close" onClick={this.context.mount.pop}>
                   &times;
                 </div>
               </Layout.Modal>

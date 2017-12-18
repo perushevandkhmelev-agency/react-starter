@@ -1,6 +1,5 @@
 import nprogress from 'nprogress'
 import defer from 'lodash/defer'
-import 'styles/nprogress.scss'
 
 nprogress.configure({
   template: `

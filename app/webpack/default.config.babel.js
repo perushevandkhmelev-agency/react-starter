@@ -3,7 +3,7 @@ require('dotenv').load({ silent: true })
 import path from 'path'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ExtractTextWebpackPlugin from 'extract-text-webpack-plugin'
+// import ExtractTextWebpackPlugin from 'extract-text-webpack-plugin'
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin'
 import WebpackIsomorphicToolsConfig from './isomorphic-tools.config'
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsomorphicToolsConfig)
@@ -30,8 +30,7 @@ let config = {
       'redux',
       'react-redux',
       'redux-thunk',
-      'redux-promise-middleware',
-      'classnames'
+      'redux-promise-middleware'
     ]
   },
   output: {
@@ -46,38 +45,6 @@ let config = {
         test: /\.js$/,
         use: 'babel-loader',
         exclude: /node_modules/
-      },
-      {
-        test: webpackIsomorphicToolsPlugin.regular_expression('styles'),
-        use: ['css-hot-loader'].concat(
-          ExtractTextWebpackPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader?-autoprefixer',
-                options: {
-                  importLoaders: 2,
-                  modules: true,
-                  localIdentName: '[name]__[local]--[hash:base64:5]'
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  config: {
-                    path: path.resolve(__dirname, './postcss.config.js')
-                  }
-                }
-              },
-              {
-                loader: 'sass-loader',
-                options: {
-                  includePaths: [path.resolve(__dirname, '../../styles'), path.resolve(__dirname, '../../assets')]
-                }
-              }
-            ]
-          })
-        )
       },
       {
         test: /\.json$/,
@@ -106,11 +73,6 @@ let config = {
             }
           }
         ]
-      },
-      {
-        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
-        use: 'raw-loader',
-        include: path.resolve(__dirname, '../../assets/raw')
       }
     ]
   },
@@ -124,9 +86,6 @@ let config = {
       name: 'vendor',
       filename: isProduction ? '[name].[chunkhash:10].js' : '[name].js',
       minChunks: Infinity
-    }),
-    new ExtractTextWebpackPlugin(isProduction ? '[name].[contenthash:10].css' : '[name].css', {
-      allChunks: true
     }),
     new HtmlWebpackPlugin({
       inject: false,
@@ -146,7 +105,7 @@ let config = {
     webpackIsomorphicToolsPlugin
   ],
   resolve: {
-    extensions: ['.js', '.json', '.css', '.scss']
+    extensions: ['.js', '.json']
   },
   stats: {
     children: false

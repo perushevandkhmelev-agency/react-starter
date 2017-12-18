@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import CSSModules from 'react-css-modules'
 import classnames from 'classnames'
 import get from 'lodash/get'
 import uniqueId from 'lodash/uniqueId'
@@ -11,9 +10,6 @@ import without from 'lodash/without'
 import findLast from 'lodash/findLast'
 import dropRightWhile from 'lodash/dropRightWhile'
 import { ROUTER_NAVIGATE } from '../constants/ActionTypes'
-
-import styles from 'styles/mount.scss'
-import modal from 'styles/modal.scss'
 
 export const MOUNT_SET_ACTIONS = 'MOUNT_SET_ACTIONS'
 export const MOUNT_REMOVE_ACTIONS = 'MOUNT_REMOVE_ACTIONS'
@@ -54,10 +50,10 @@ const DEFAULT_TRANSITION = {
   enter: true,
   exit: true,
   classNames: {
-    enter: modal['enter'],
-    enterActive: modal['enter-active'],
-    exit: modal['exit'],
-    exitActive: modal['exit-active']
+    enter: 'enter',
+    enterActive: 'enter-active',
+    exit: 'exit',
+    exitActive: 'exit-active'
   },
   timeout: {
     enter: 250,
@@ -65,7 +61,6 @@ const DEFAULT_TRANSITION = {
   }
 }
 
-@CSSModules(styles)
 export default class extends Component {
   static contextTypes = {
     store: PropTypes.object
@@ -118,7 +113,7 @@ export default class extends Component {
         <div ref="mobile" className="only-mobile" />
         <div
           className={classnames('max-height', this.props.contentClassName)}
-          styleName={isMounted ? 'content-mounted' : null}>
+          className={isMounted ? 'content-mounted' : null}>
           {this.props.children}
         </div>
         <TransitionGroup className={isMounted ? 'max-height' : null}>
@@ -133,7 +128,7 @@ export default class extends Component {
     const isMounted = this.state.mounted[get(this.state, `stack[${itemIndex + 1}].key`, null)] || false
     return (
       <CSSTransition key={item.key} {...this.state.transitionOptions}>
-        <div styleName={isMounted ? 'layer-mounted' : 'layer'}>{item.component}</div>
+        <div className={isMounted ? 'layer-mounted' : 'layer'}>{item.component}</div>
       </CSSTransition>
     )
   }
