@@ -93,6 +93,14 @@ let config = {
       template: 'app/views/template.html',
       filename: 'template.html',
       favicon: 'assets/favicon.png',
+      minify: {
+        removeAttributeQuotes: true,
+        collapseWhitespace: true,
+        html5: true,
+        minifyCSS: true,
+        removeComments: true,
+        removeEmptyAttributes: true
+      },
       chunks: ['app', 'vendor', 'hot']
     }),
     new webpack.DefinePlugin({
