@@ -1,10 +1,10 @@
 import { injectGlobal } from 'styled-components'
 import { normalize, fontFace } from 'polished'
-import { colors } from 'utils/styles'
+import { colors, onlyMobile, onlyDesktop } from 'utils/styles'
 
 export default () => {
   injectGlobal`
-    ${normalize()}
+    ${normalize()};
 
     *,
     *:before,
@@ -44,6 +44,14 @@ export default () => {
 
     .max-height {
       height: 100%;
+    }
+
+    .only-mobile {
+      ${onlyMobile};
+    }
+
+    .only-desktop {
+      ${onlyDesktop};
     }
 
     #nprogress {
