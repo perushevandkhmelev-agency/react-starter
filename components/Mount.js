@@ -52,10 +52,10 @@ const DEFAULT_TRANSITION = {
   enter: true,
   exit: true,
   classNames: {
-    enter: 'enter',
-    enterActive: 'enter-active',
-    exit: 'exit',
-    exitActive: 'exit-active'
+    enter: 'modal-enter',
+    enterActive: 'modal-enter-active',
+    exit: 'modal-exit',
+    exitActive: 'modal-exit-active'
   },
   timeout: {
     enter: 250,
