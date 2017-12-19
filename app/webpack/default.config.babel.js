@@ -3,7 +3,6 @@ require('dotenv').load({ silent: true })
 import path from 'path'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-// import ExtractTextWebpackPlugin from 'extract-text-webpack-plugin'
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin'
 import WebpackIsomorphicToolsConfig from './isomorphic-tools.config'
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsomorphicToolsConfig)
