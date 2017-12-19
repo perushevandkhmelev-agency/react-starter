@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { FormattedMessage, defineMessages } from 'react-intl'
+import { defineMessages, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import Layout from 'components/Layout'
 import Icon from 'components/Icon'
 import MainModal from './MainModal'
-import styled from 'styled-components'
 
 const messages = defineMessages({
   title: {
@@ -26,23 +25,17 @@ export default class extends Component {
   render() {
     return (
       <Layout>
-        <Test>
-          <h1>
-            <Icon name="thumbs-up" />
-            <FormattedMessage {...messages.title} />
-          </h1>
-          <button onClick={() => this.context.mount.push(MainModal)}>Open test modal</button>
-          <p>
-            <Link to="/test">
-              <FormattedMessage {...messages.link} />
-            </Link>
-          </p>
-        </Test>
+        <h1>
+          <Icon name="thumbs-up" />
+          <FormattedMessage {...messages.title} />
+        </h1>
+        <button onClick={() => this.context.mount.push(MainModal)}>Open test modal</button>
+        <p>
+          <Link to="/test">
+            <FormattedMessage {...messages.link} />
+          </Link>
+        </p>
       </Layout>
     )
   }
 }
-
-const Test = styled.div`
-  background-color: blue;
-`
