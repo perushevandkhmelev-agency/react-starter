@@ -23,7 +23,7 @@ export default class extends Component {
     if (html) {
       return React.createElement(this.props.component, {
         ...props,
-        onClick: this._handleClick.bind(this),
+        onClick: this._handleClick,
         dangerouslySetInnerHTML: { __html: html }
       })
     } else {
@@ -31,7 +31,7 @@ export default class extends Component {
     }
   }
 
-  _handleClick(event) {
+  _handleClick = event => {
     if (event.target.nodeName === 'A') {
       const href = event.target.getAttribute('href')
       const target = event.target.getAttribute('target')
