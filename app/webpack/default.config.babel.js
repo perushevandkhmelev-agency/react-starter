@@ -72,6 +72,11 @@ let config = {
             }
           }
         ]
+      },
+      {
+        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
+        use: 'raw-loader',
+        include: path.resolve(__dirname, '../../assets/raw')
       }
     ]
   },
