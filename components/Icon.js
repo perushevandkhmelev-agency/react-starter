@@ -1,13 +1,12 @@
 import styled, { injectGlobal } from 'styled-components'
-import { fontFace } from 'polished'
 import config from 'assets/fonts/icons/config.json'
 
 injectGlobal`
-  ${fontFace({
-    fontFamily: config.name,
-    fontFilePath: `/assets/fonts/icons/${config.name}`,
-    fileFormats: ['woff', 'woff2']
-  })}
+  @font-face {
+    font-family: ${config.name};
+    src: url(${require(`../assets/fonts/icons/${config.name}.woff2`)}) format("woff2"),
+         url(${require(`../assets/fonts/icons/${config.name}.woff`)}) format("woff");
+  }
 `
 
 const nameToChar = name => {
@@ -26,8 +25,6 @@ export default styled.i`
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
-
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 

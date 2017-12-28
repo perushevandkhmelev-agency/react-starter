@@ -50,18 +50,6 @@ let config = {
         use: 'json-loader'
       },
       {
-        test: webpackIsomorphicToolsPlugin.regular_expression('fonts'),
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              name: isProduction ? '[name].[hash:10].[ext]' : '[name].[ext]'
-            }
-          }
-        ]
-      },
-      {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         use: [
           {
@@ -77,6 +65,18 @@ let config = {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         use: 'raw-loader',
         include: path.resolve(__dirname, '../../assets/raw')
+      },
+      {
+        test: webpackIsomorphicToolsPlugin.regular_expression('fonts'),
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]'
+            }
+          }
+        ],
+        include: path.resolve(__dirname, '../../assets/fonts')
       }
     ]
   },
