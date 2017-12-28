@@ -1,11 +1,12 @@
 import styled, { injectGlobal } from 'styled-components'
 import config from 'assets/fonts/icons/config.json'
+import IconsWoff from 'assets/fonts/icons/icons.woff'
+import IconsWoff2 from 'assets/fonts/icons/icons.woff2'
 
 injectGlobal`
   @font-face {
     font-family: ${config.name};
-    src: url(${require(`../assets/fonts/icons/${config.name}.woff2`)}) format("woff2"),
-         url(${require(`../assets/fonts/icons/${config.name}.woff`)}) format("woff");
+    src: url(${IconsWoff2}) format("woff2"), url(${IconsWoff}) format("woff");
   }
 `
 
