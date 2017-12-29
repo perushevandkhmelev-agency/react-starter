@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import CSSModules from 'react-css-modules'
-import classnames from 'classnames'
 import get from 'lodash/get'
 import uniqueId from 'lodash/uniqueId'
 import pick from 'lodash/pick'
@@ -11,9 +9,8 @@ import without from 'lodash/without'
 import findLast from 'lodash/findLast'
 import dropRightWhile from 'lodash/dropRightWhile'
 import { ROUTER_NAVIGATE } from '../constants/ActionTypes'
-
-import styles from 'styles/mount.scss'
-import modal from 'styles/modal.scss'
+import styled, { css } from 'styled-components'
+import { media, onlyMobile, zIndex } from 'utils/styles'
 
 export const MOUNT_SET_ACTIONS = 'MOUNT_SET_ACTIONS'
 export const MOUNT_REMOVE_ACTIONS = 'MOUNT_REMOVE_ACTIONS'
@@ -54,10 +51,10 @@ const DEFAULT_TRANSITION = {
   enter: true,
   exit: true,
   classNames: {
-    enter: modal['enter'],
-    enterActive: modal['enter-active'],
-    exit: modal['exit'],
-    exitActive: modal['exit-active']
+    enter: 'modal-enter',
+    enterActive: 'modal-enter-active',
+    exit: 'modal-exit',
+    exitActive: 'modal-exit-active'
   },
   timeout: {
     enter: 250,
@@ -65,7 +62,6 @@ const DEFAULT_TRANSITION = {
   }
 }
 
-@CSSModules(styles)
 export default class extends Component {
   static contextTypes = {
     store: PropTypes.object
@@ -114,13 +110,11 @@ export default class extends Component {
   render() {
     const isMounted = this.state.mounted[get(this.state, 'stack[0].key', null)] || false
     return (
-      <section className={classnames('max-height', this.props.className)}>
-        <div ref="mobile" className="only-mobile" />
-        <div
-          className={classnames('max-height', this.props.contentClassName)}
-          styleName={isMounted ? 'content-mounted' : null}>
+      <section className="max-height">
+        <div ref="mobile" />
+        <Content className="max-height" mounted={isMounted}>
           {this.props.children}
-        </div>
+        </Content>
         <TransitionGroup className={isMounted ? 'max-height' : null}>
           {this.state.stack.map(this._renderStackItem)}
         </TransitionGroup>
@@ -133,7 +127,7 @@ export default class extends Component {
     const isMounted = this.state.mounted[get(this.state, `stack[${itemIndex + 1}].key`, null)] || false
     return (
       <CSSTransition key={item.key} {...this.state.transitionOptions}>
-        <div styleName={isMounted ? 'layer-mounted' : 'layer'}>{item.component}</div>
+        <Layer mounted={isMounted}>{item.component}</Layer>
       </CSSTransition>
     )
   }
@@ -228,3 +222,51 @@ export default class extends Component {
     })
   }
 }
+
+const MobileRef = styled.div`
+  ${onlyMobile};
+`
+
+const Content = styled.div`
+  ${props =>
+    props.mounted &&
+    css`
+      ${media.mobile`
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        visibility: hidden;
+        overflow: hidden;
+      `};
+    `};
+`
+
+const Layer = styled.div`
+  z-index: ${zIndex.modal};
+
+  ${media.mobile`
+    height: 100%;
+  `};
+
+  ${media.desktop`
+    position: relative;
+  `};
+
+  ${props =>
+    props.mounted &&
+    css`
+      ${media.mobile`
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        visibility: hidden;
+        overflow: hidden;
+      `};
+    `};
+`

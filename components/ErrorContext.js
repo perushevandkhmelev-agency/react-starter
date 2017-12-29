@@ -2,16 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class extends Component {
-  static get childContextTypes() {
-    return {
-      error: PropTypes.object
-    }
+  static childContextTypes = {
+    error: PropTypes.object
   }
 
   getChildContext() {
-    return {
-      error: this.props.error
-    }
+    return { error: this.props.error }
   }
 
   render() {

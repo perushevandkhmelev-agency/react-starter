@@ -7,11 +7,18 @@
     "transform-class-properties",
     "add-module-exports",
     [
+      "babel-plugin-styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
+      }
+    ],
+    [
       "module-resolver",
       {
         "root": ["./"],
         "alias": {
-          "styles": "./styles",
           "translate": "./intl"
         }
       }

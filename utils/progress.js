@@ -1,17 +1,5 @@
 import nprogress from 'nprogress'
 import defer from 'lodash/defer'
-import 'styles/nprogress.scss'
-
-nprogress.configure({
-  template: `
-    <div class="nprogress__bar" role="bar">
-      <div class="nprogress__peg"></div>
-    </div>
-    <div class="nprogress__spinner" role="spinner">
-      <div class="nprogress__spinner__icon"></div>
-    </div>
-  `
-})
 
 let index = 0
 

@@ -1,35 +1,33 @@
 import React, { Component } from 'react'
-import CSSModules from 'react-css-modules'
-import styles from 'styles/layout.scss'
-import container from 'styles/layout.container.scss'
-import modal from 'styles/layout.modal.scss'
+import styled from 'styled-components'
 
-@CSSModules(styles)
-export default class Layout extends Component {
+export default class extends Component {
   render() {
-    const { children, ...props } = this.props
     return (
-      <section {...props} styleName="root">
-        <div styleName="header">Header</div>
-        <div styleName="content">{children}</div>
-        <div styleName="footer">Footer</div>
-      </section>
+      <Root className="max-height">
+        <Header>Header</Header>
+        <Content>{this.props.children}</Content>
+        <Footer>Footer</Footer>
+      </Root>
     )
   }
 }
 
-const component = styles =>
-  @CSSModules(styles)
-  class extends Component {
-    render() {
-      const { children, ...props } = this.props
-      return (
-        <div {...props} styleName="root">
-          {children}
-        </div>
-      )
-    }
-  }
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
-Layout.Container = component(container)
-Layout.Modal = component(modal)
+const Header = styled.header`
+  flex-shrink: 0;
+`
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
+
+const Footer = styled.footer`
+  flex-shrink: 0;
+`

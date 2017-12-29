@@ -3,7 +3,6 @@ require('dotenv').load({ silent: true })
 import path from 'path'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ExtractTextWebpackPlugin from 'extract-text-webpack-plugin'
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin'
 import WebpackIsomorphicToolsConfig from './isomorphic-tools.config'
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(WebpackIsomorphicToolsConfig)
@@ -30,8 +29,7 @@ let config = {
       'redux',
       'react-redux',
       'redux-thunk',
-      'redux-promise-middleware',
-      'classnames'
+      'redux-promise-middleware'
     ]
   },
   output: {
@@ -48,52 +46,8 @@ let config = {
         exclude: /node_modules/
       },
       {
-        test: webpackIsomorphicToolsPlugin.regular_expression('styles'),
-        use: ['css-hot-loader'].concat(
-          ExtractTextWebpackPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              {
-                loader: 'css-loader?-autoprefixer',
-                options: {
-                  importLoaders: 2,
-                  modules: true,
-                  localIdentName: '[name]__[local]--[hash:base64:5]'
-                }
-              },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  config: {
-                    path: path.resolve(__dirname, './postcss.config.js')
-                  }
-                }
-              },
-              {
-                loader: 'sass-loader',
-                options: {
-                  includePaths: [path.resolve(__dirname, '../../styles'), path.resolve(__dirname, '../../assets')]
-                }
-              }
-            ]
-          })
-        )
-      },
-      {
         test: /\.json$/,
         use: 'json-loader'
-      },
-      {
-        test: webpackIsomorphicToolsPlugin.regular_expression('fonts'),
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              name: isProduction ? '[name].[hash:10].[ext]' : '[name].[ext]'
-            }
-          }
-        ]
       },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
@@ -111,6 +65,18 @@ let config = {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         use: 'raw-loader',
         include: path.resolve(__dirname, '../../assets/raw')
+      },
+      {
+        test: webpackIsomorphicToolsPlugin.regular_expression('fonts'),
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]'
+            }
+          }
+        ],
+        include: path.resolve(__dirname, '../../assets/fonts')
       }
     ]
   },
@@ -125,15 +91,20 @@ let config = {
       filename: isProduction ? '[name].[chunkhash:10].js' : '[name].js',
       minChunks: Infinity
     }),
-    new ExtractTextWebpackPlugin(isProduction ? '[name].[contenthash:10].css' : '[name].css', {
-      allChunks: true
-    }),
     new HtmlWebpackPlugin({
       inject: false,
       address: address,
       template: 'app/views/template.html',
       filename: 'template.html',
       favicon: 'assets/favicon.png',
+      minify: {
+        removeAttributeQuotes: true,
+        collapseWhitespace: true,
+        html5: true,
+        minifyCSS: true,
+        removeComments: true,
+        removeEmptyAttributes: true
+      },
       chunks: ['app', 'vendor', 'hot']
     }),
     new webpack.DefinePlugin({
@@ -146,7 +117,7 @@ let config = {
     webpackIsomorphicToolsPlugin
   ],
   resolve: {
-    extensions: ['.js', '.json', '.css', '.scss']
+    extensions: ['.js', '.json']
   },
   stats: {
     children: false
