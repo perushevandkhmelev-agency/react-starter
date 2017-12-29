@@ -5,6 +5,8 @@ import ScrollMemory from 'react-router-scroll-memory'
 import Helmet from 'react-helmet'
 import ErrorPage from './ErrorPage'
 import Mount from './Mount'
+import config from 'app/config'
+import { YMInitializer } from 'react-yandex-metrika'
 
 export default class extends Component {
   static contextTypes = {
@@ -19,6 +21,7 @@ export default class extends Component {
         <ScrollMemory />
         <Helmet title="Project name" />
         {code ? <ErrorPage code={code} /> : <Mount>{renderRoutes(this.props.route.routes)}</Mount>}
+        <YMInitializer accounts={[config.ymTrackingCode]} options={{ defer: true, clickmap: true, webvisor: true }} />
       </section>
     )
   }

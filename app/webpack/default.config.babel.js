@@ -111,7 +111,8 @@ let config = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         API_URL: process.env.API_URL ? JSON.stringify(process.env.API_URL) : null,
-        GA_TRACKING_CODE: process.env.GA_TRACKING_CODE ? JSON.stringify(process.env.GA_TRACKING_CODE) : null
+        GA_TRACKING_CODE: process.env.GA_TRACKING_CODE ? JSON.stringify(process.env.GA_TRACKING_CODE) : null,
+        YM_TRACKING_CODE: process.env.YM_TRACKING_CODE ? JSON.stringify(process.env.YM_TRACKING_CODE) : null
       }
     }),
     webpackIsomorphicToolsPlugin

@@ -11,6 +11,8 @@
     UV_THREADPOOL_SIZE=100
     SERVER_PORT=4000
     API_URL=http://api.projectname
+    GA_TRACKING_CODE=UA-XXXXXXXXX-X
+    YM_TRACKING_CODE=XXXXXXXX
 
 ### How to work with icons
 
