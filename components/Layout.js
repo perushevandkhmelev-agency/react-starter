@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export default class extends Component {
   render() {
     return (
-      <Root className="max-height">
+      <Root>
         <Header>Header</Header>
         <Content>{this.props.children}</Content>
         <Footer>Footer</Footer>
@@ -16,6 +16,7 @@ export default class extends Component {
 const Root = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100%;
 `
 
 const Header = styled.header`
