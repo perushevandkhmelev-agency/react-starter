@@ -18,11 +18,7 @@ export default () => {
       height: 100%;
     }
 
-    html,
     body {
-      margin: 0px;
-      padding: 0px;
-      font-weight: normal;
       -webkit-font-smoothing: antialiased;
     }
 
