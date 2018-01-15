@@ -20,7 +20,7 @@ export default function() {
     let miscActions = bindActionCreators(MiscActions, store.dispatch)
     miscActions.setConfig(config)
 
-    let createRoutes = require('../routes')
+    let createRoutes = require('../pages')
     let routes = createRoutes(store)
     let branch = matchRoutes(routes, ctx.request.originalUrl)
 

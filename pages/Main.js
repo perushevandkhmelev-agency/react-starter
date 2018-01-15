@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import Layout from 'components/Layout'
 import Icon from 'components/Icon'
-import MainModal from './MainModal'
+import MainModal from 'components/MainModal'
 
 const messages = defineMessages({
   title: {

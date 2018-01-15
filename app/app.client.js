@@ -30,7 +30,7 @@ async function run(location, options) {
     progress.start()
   }
 
-  const createRoutes = require('../routes')
+  const createRoutes = require('../pages')
   const renderApp = require('./render')
   const routes = createRoutes(store)
   const branch = matchRoutes(routes, location.pathname + location.search)
@@ -60,5 +60,5 @@ async function run(location, options) {
 app()
 
 if (module.hot) {
-  module.hot.accept(['../routes', './render'], () => run(browserHistory.location, { hot: true }))
+  module.hot.accept(['../pages', './render'], () => run(browserHistory.location, { hot: true }))
 }
