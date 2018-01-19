@@ -38,19 +38,19 @@ export default class extends Component {
 
   render() {
     return (
-      <Root
+      <div
         onTouchStart={this._handleSwipeStart}
         onTouchMove={this._handleSwipeMove}
         onTouchEnd={this._handleSwipeEnd}
         onTouchCancel={this._handleSwipeEnd}>
-        <Сontent
+        <Content
           withAnimation={this.state.animation}
           innerRef={content => (this._contentRef = content)}
           style={this._positionStyle()}
           disabledAnimation={this.props.disabledAnimation}>
           {this.props.children}
-        </Сontent>
-      </Root>
+        </Content>
+      </div>
     )
   }
 
@@ -163,11 +163,7 @@ export default class extends Component {
   }
 }
 
-const Root = styled.div`
-  overflow: hidden;
-`
-
-const Сontent = styled.div`
+const Content = styled.div`
   white-space: nowrap;
 
   ${props =>
