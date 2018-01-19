@@ -1,16 +1,11 @@
 import { MISC_SET_CONFIG } from 'constants/ActionTypes'
 
-export default function(state = {}, action) {
+export default (state = {}, action) => {
   switch (action.type) {
-    case MISC_SET_CONFIG: {
-      return {
-        ...state,
-        ...action.data
-      }
-    }
+    case MISC_SET_CONFIG:
+      return { ...state, ...action.data }
 
-    default: {
+    default:
       return state
-    }
   }
 }

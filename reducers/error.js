@@ -1,6 +1,6 @@
 import { ROUTER_BEFORE_NAVIGATE, ROUTER_NAVIGATE, ROUTER_ERROR_RAISE, ROUTER_REJECTED } from 'constants/ActionTypes'
 
-export default function(state = {}, action) {
+export default (state = {}, action) => {
   switch (action.type) {
     case ROUTER_BEFORE_NAVIGATE: {
       if (action.initial) {
@@ -26,12 +26,10 @@ export default function(state = {}, action) {
       return { ...state, nextCode: action.payload.code || action.payload.status || 404 }
     }
 
-    case ROUTER_NAVIGATE: {
+    case ROUTER_NAVIGATE:
       return { ...state, code: state.nextCode }
-    }
 
-    default: {
+    default:
       return state
-    }
   }
 }
