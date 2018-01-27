@@ -126,7 +126,7 @@ let config = {
 }
 
 if (isProduction) {
-  config.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
+  config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin())
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
