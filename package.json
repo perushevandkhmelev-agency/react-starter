@@ -92,7 +92,7 @@
     "gulp-cli": "^1.4.0",
     "ip": "^1.1.5",
     "pm2": "^2.8.0",
-    "prettier": "^1.8.2",
+    "prettier": "^1.15.2",
     "react-intl-translations-manager": "^5.0.1",
     "webpack-dev-server": "^2.9.4"
   }
